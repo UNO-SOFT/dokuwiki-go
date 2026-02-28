@@ -46,7 +46,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -110,7 +110,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -171,7 +171,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -235,7 +235,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -380,7 +380,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -441,7 +441,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -2696,7 +2696,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -2843,7 +2843,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -3060,7 +3060,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -3196,7 +3196,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -3808,7 +3808,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -4971,7 +4971,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -5036,7 +5036,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -5101,7 +5101,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
@@ -5583,7 +5583,7 @@
                     "content": {
                         "application\/json": {
                             "schema": {
-                                "type": "null"
+                                "type": "object"
                             }
                         }
                     }
