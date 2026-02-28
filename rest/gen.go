@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 package dokuwiki
 
 //go:generate sed -i -e "/\"type\": \"null\"/ s/null/object/" dokuwiki.json
