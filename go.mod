@@ -1,4 +1,4 @@
-module github.com/UNO-SOFT/dokuwiki
+module github.com/UNO-SOFT/dokuwiki-go
 
 go 1.25.4
 
