@@ -1,6 +1,6 @@
 module github.com/UNO-SOFT/dokuwiki-go
 
-go 1.25.4
+go 1.26
 
 tool (
 	github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
@@ -8,7 +8,12 @@ tool (
 )
 
 require (
-	github.com/UNO-SOFT/zlog v0.8.6 // indirect
+	github.com/UNO-SOFT/zlog v0.8.6
+	github.com/go-json-experiment/json v0.0.0-20260214004413-d219187c3433
+	github.com/peterbourgon/ff/v4 v4.0.0-beta.1
+)
+
+require (
 	github.com/dgryski/go-linebreak v0.0.0-20180812204043-d8f37254e7d3 // indirect
 	github.com/dprotaso/go-yit v0.0.0-20220510233725-9ba8df137936 // indirect
 	github.com/getkin/kin-openapi v0.133.0 // indirect
@@ -24,7 +29,6 @@ require (
 	github.com/oasdiff/yaml v0.0.0-20250309154309-f31be36b4037 // indirect
 	github.com/oasdiff/yaml3 v0.0.0-20250309153720-d2182401db90 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
-	github.com/peterbourgon/ff/v4 v4.0.0-beta.1 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/speakeasy-api/jsonpath v0.6.0 // indirect
 	github.com/speakeasy-api/openapi-overlay v0.10.2 // indirect
