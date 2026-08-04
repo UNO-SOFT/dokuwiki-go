@@ -7,7 +7,6 @@ package main
 import (
 	"bytes"
 	"context"
-	"crypto/sha256"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -31,26 +30,26 @@ var ErrNotFound = errors.New("not found")
 
 type (
 	dumper struct {
-		seen                 map[string]struct{}
-		destDir, mediaSubdir string
-		base                 *url.URL
-		cl                   dokuwiki.ClientWithResponsesInterface
-		mu                   sync.Mutex
+		seen    map[string]struct{}
+		destDir string
+		base    *url.URL
+		cl      dokuwiki.ClientWithResponsesInterface
+		mu      sync.Mutex
 	}
 	element struct {
 		ID, Title string
 	}
 )
 
-func newDumper(cl dokuwiki.ClientWithResponsesInterface, wikiURL, destDir, mediaSubdir string) (*dumper, error) {
-	if err := os.MkdirAll(filepath.Join(destDir, mediaSubdir), 0755); err != nil {
+func newDumper(cl dokuwiki.ClientWithResponsesInterface, wikiURL, destDir string) (*dumper, error) {
+	if err := os.MkdirAll(destDir, 0755); err != nil {
 		return nil, err
 	}
 	base, err := url.Parse(wikiURL)
 	if err != nil {
 		return nil, err
 	}
-	return &dumper{base: base, cl: cl, destDir: destDir, mediaSubdir: mediaSubdir, seen: make(map[string]struct{})}, nil
+	return &dumper{base: base, cl: cl, destDir: destDir, seen: make(map[string]struct{})}, nil
 }
 
 func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) {
@@ -69,7 +68,6 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 		if err != nil {
 			return elt, nil, err
 		}
-		logger.Info("got", "title", elt.Title, "id", elt.ID, "page", a, "status", resp.Status())
 		if result := resp.GetJSON200(); result == nil {
 			if b := resp.GetBody(); bytes.Contains(b, []byte("does not exist")) {
 				return elt, nil, fmt.Errorf("%w: %s", ErrNotFound, string(b))
@@ -80,6 +78,7 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 			elt.ID, elt.Title = *result.Result.Id, *result.Result.Title
 		}
 	}
+	logger.Info("download", "id", elt.ID, "title", elt.Title)
 
 	var more []string
 	err := func() error {
@@ -87,13 +86,11 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 		if err != nil {
 			return err
 		}
-		logger.Info("got", "status", resp.Status())
 		result := *resp.GetJSON200().Result
 		doc, err := goquery.NewDocumentFromReader(strings.NewReader(result))
 		if err != nil {
 			return fmt.Errorf("parse %s: %w", result, err)
 		}
-		mediaDir := filepath.Join(d.destDir, d.mediaSubdir)
 		var errs []error
 		doc.Find("a[data-wiki-id]").Each(func(_ int, sel *goquery.Selection) {
 			a, ok := sel.Attr("data-wiki-id")
@@ -101,8 +98,9 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 				errs = append(errs, fmt.Errorf("no data-wiki-id: %v", sel))
 			}
 			more = append(more, a)
-			sel.SetAttr("href", id2fn(a))
+			sel.SetAttr("href", "./"+id2fn(a))
 		})
+		var buf strings.Builder
 		doc.Find("img.media").Each(func(_ int, sel *goquery.Selection) {
 			if err := func() error {
 				src, ok := sel.Attr("src")
@@ -124,37 +122,12 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 					return fmt.Errorf("Do(%s): %w", want, err)
 				}
 				defer resp.Body.Close()
-				_, params, _ := mime.ParseMediaType(resp.Header.Get("Content-Disposition"))
-				fn := params["filename"]
 				ct, _, _ := mime.ParseMediaType(resp.Header.Get("Content-Type"))
-				exts, _ := mime.ExtensionsByType(ct)
-				if len(exts) != 0 && filepath.Ext(fn) == "" {
-					fn += exts[0]
-				}
-				fh, err := os.CreateTemp(mediaDir, fn+"-*")
-				if err != nil {
-					return fmt.Errorf("CreateTemp: %s", err)
-				}
-				if err := func() error {
-					defer fh.Close()
-					hsh := sha256.New()
-					n, err := io.Copy(io.MultiWriter(fh, hsh), resp.Body)
-					if err != nil {
-						return fmt.Errorf("read %s: %w", want, err)
-					}
-					if err = fh.Close(); err != nil {
-						return fmt.Errorf("close %s: %w", fh.Name(), err)
-					}
-					var a [sha256.Size]byte
-					fn = base64.URLEncoding.EncodeToString(hsh.Sum(a[:0])) + "-" + fn
-					logger.Info("got", "url", want, "length", n, "fn", fn)
-					os.Rename(fh.Name(), filepath.Join(d.destDir, "media", fn))
-					sel.SetAttr("src", path.Join(".", d.mediaSubdir, fn))
-					return nil
-				}(); err != nil {
-					os.Remove(fh.Name())
+				buf.Reset()
+				if err = dataURL(&buf, resp.Body, ct); err != nil {
 					return err
 				}
+				sel.SetAttr("src", buf.String())
 				return nil
 			}(); err != nil {
 				logger.Error("sel", "error", err)
@@ -165,14 +138,32 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 		if err != nil {
 			errs = append(errs, err)
 		} else {
-			fn := elt.ID + ".html"
-			errs = append(errs, renameio.WriteFile(filepath.Join(d.destDir, fn), []byte(h), 0644))
+			fn := filepath.Join(d.destDir, id2fn(elt.ID))
+			os.MkdirAll(filepath.Dir(fn), 0775)
+			errs = append(errs, renameio.WriteFile(fn, []byte(h), 0644))
 		}
 		return errors.Join(errs...)
 	}()
 	return elt, more, err
 }
 
-func (e element) HRef() string { return id2fn(e.ID) }
+func (e element) HRef() string { return "./" + id2fn(e.ID) }
 
-func id2fn(id string) string { return path.Join(".", template.URLQueryEscaper(id)+".html") }
+func id2fn(id string) string {
+	parts := make([]string, 0, strings.Count(id, ":"))
+	for p := range strings.SplitSeq(id+".html", ":") {
+		parts = append(parts, template.URLQueryEscaper(p))
+	}
+	return path.Join(parts...)
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data
+// data:[<media-type>][;base64],<data>
+func dataURL(w io.Writer, r io.Reader, mediaType string) error {
+	fmt.Fprintf(w, "data:%s;base64,", mediaType)
+	enc := base64.NewEncoder(base64.StdEncoding, w)
+	if _, err := io.Copy(enc, r); err != nil {
+		return err
+	}
+	return enc.Close()
+}

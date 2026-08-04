@@ -118,7 +118,7 @@ func Main() error {
 	flagDumpDest := flags.String('o', "output", "", "destination directory")
 	dumpCmd := ff.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
-			d, err := newDumper(cl, wikiURL, *flagDumpDest, "media")
+			d, err := newDumper(cl, wikiURL, *flagDumpDest)
 			if err != nil {
 				return err
 			}
@@ -152,7 +152,7 @@ func Main() error {
 			todo := [][]string{args}
 			for {
 				todoMu.Lock()
-				logger.Info("todo", "todo", todo, "length", len(todo))
+				logger.Debug("todo", "todo", todo, "length", len(todo))
 				if len(todo) == 0 {
 					todoMu.Unlock()
 					break
@@ -196,7 +196,7 @@ func Main() error {
 				return err
 			}
 			defer fh.Cleanup()
-			logger.Info("exec", "template", tmpl, "elts", elts, "length", len(elts))
+			logger.Debug("exec", "template", tmpl, "elts", elts, "length", len(elts))
 			if err = tmpl.Execute(fh, elts); err != nil {
 				return err
 			}
