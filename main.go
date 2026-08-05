@@ -5,7 +5,6 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -18,19 +17,16 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"reflect"
-	"runtime"
 	"slices"
 	"strings"
-	"sync"
 
+	dump "github.com/UNO-SOFT/dokuwiki-go/dump"
 	dokuwiki "github.com/UNO-SOFT/dokuwiki-go/rest"
 	"github.com/UNO-SOFT/zlog/v2"
 	"github.com/go-json-experiment/json"
 	"github.com/google/renameio/v2"
 	"github.com/peterbourgon/ff/v4"
 	"github.com/peterbourgon/ff/v4/ffhelp"
-	"golang.org/x/sync/errgroup"
 )
 
 var (
@@ -57,7 +53,7 @@ func Main() error {
 				req.Page = a
 				history, err := cl.CoreGetPageHistoryWithResponse(ctx, req)
 				if err == nil {
-					err = checkResponse(history)
+					err = dokuwiki.CheckResponse(history)
 				}
 				if err != nil {
 					return err
@@ -77,7 +73,7 @@ func Main() error {
 				req.Page = a
 				html, err := cl.CoreGetPageHTMLWithResponse(ctx, req)
 				if err == nil {
-					err = checkResponse(html)
+					err = dokuwiki.CheckResponse(html)
 				}
 				if err != nil {
 					return err
@@ -96,7 +92,7 @@ func Main() error {
 				req.Page = a
 				links, err := cl.CoreGetPageLinksWithResponse(ctx, req)
 				if err == nil {
-					err = checkResponse(links)
+					err = dokuwiki.CheckResponse(links)
 				}
 				if err != nil {
 					return err
@@ -116,7 +112,7 @@ func Main() error {
 				req.Page = a
 				info, err := cl.CoreGetPageInfoWithResponse(ctx, req)
 				if err == nil {
-					err = checkResponse(info)
+					err = dokuwiki.CheckResponse(info)
 				}
 				if err != nil {
 					return err
@@ -136,7 +132,7 @@ func Main() error {
 	flagDumpForce := flags.Bool('f', "force", "force download")
 	dumpCmd := ff.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
-			d, err := newDumper(cl, wikiURL, *flagDumpDest, *flagDumpForce)
+			d, err := dump.New(cl, wikiURL, *flagDumpDest, *flagDumpForce)
 			if err != nil {
 				return err
 			}
@@ -154,7 +150,7 @@ func Main() error {
 			}
 
 			var buf strings.Builder
-			if err = tmpl.Execute(&buf, []element{
+			if err = tmpl.Execute(&buf, []dump.Element{
 				{ID: "unosoft:alfa:kezikonyv:bruno3", Title: "BRUNO3 Kézikönyv"},
 			}); err != nil {
 				return err
@@ -164,52 +160,19 @@ func Main() error {
 				return fmt.Errorf("bad template:\n%s", s)
 			}
 
-			var eltsMu sync.Mutex
-			var elts []element
-			var todoMu sync.Mutex
-			todo := [][]string{args}
-			for {
-				todoMu.Lock()
-				logger.Debug("todo", "todo", todo, "length", len(todo))
-				if len(todo) == 0 {
-					todoMu.Unlock()
-					break
+			var elts []dump.Element
+			for _, a := range args {
+				ee, err := d.Dump(ctx, a)
+				for _, e := range ee {
+					if i, ok := slices.BinarySearchFunc(elts, e, func(a, b dump.Element) int { return strings.Compare(a.ID, b.ID) }); !ok {
+						elts = slices.Insert(elts, i, e)
+					}
 				}
-				args, todo = todo[0], todo[1:]
-				todoMu.Unlock()
-
-				grp, ctx := errgroup.WithContext(ctx)
-				grp.SetLimit(runtime.GOMAXPROCS(-1))
-				for _, a := range args {
-					grp.Go(func() error {
-						e, more, err := d.dump(ctx, a)
-						if err != nil {
-							if errors.Is(err, ErrNotFound) {
-								logger.Error("not found", "page", a, "error", err)
-								return nil
-							}
-							return err
-						}
-						eltsMu.Lock()
-						if i, ok := slices.BinarySearchFunc(elts, e, func(a, b element) int { return strings.Compare(a.ID, b.ID) }); !ok {
-							elts = slices.Insert(elts, i, e)
-						}
-						eltsMu.Unlock()
-						if len(more) != 0 {
-							todoMu.Lock()
-							todo = append(todo, more)
-							todoMu.Unlock()
-						}
-						// logger.Info("found", "a", a, "more", more)
-						return nil
-					})
-				}
-				if err := grp.Wait(); err != nil {
-					logger.Error("ERROR", "error", err)
+				if err != nil && !errors.Is(err, dokuwiki.ErrNotFound) {
 					return err
 				}
 			}
-			fh, err := renameio.NewPendingFile(filepath.Join(d.destDir, "index.html"), renameio.WithPermissions(0644))
+			fh, err := renameio.NewPendingFile(filepath.Join(*flagDumpDest, "index.html"), renameio.WithPermissions(0644))
 			if err != nil {
 				return err
 			}
@@ -273,23 +236,5 @@ func Main() error {
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
-	return app.Run(ctx)
-}
-
-func checkResponse(resp interface{ GetBody() []byte }) error {
-	rv := reflect.ValueOf(resp)
-	rm, ok := rv.Type().MethodByName("GetJSON200")
-	if !ok {
-		return fmt.Errorf("no GetJSON200 on %#v", resp)
-	}
-	// if resp.GetJSON200() != nil {
-	if !rm.Func.Call([]reflect.Value{rv})[0].IsNil() {
-		return nil
-	}
-	if b := resp.GetBody(); bytes.Contains(b, []byte("does not exist")) {
-		return fmt.Errorf("%w: %s", ErrNotFound, string(b))
-	} else {
-		return fmt.Errorf("get %s", string(b))
-	}
-	return nil
+	return app.Run(zlog.NewSContext(ctx, logger))
 }
