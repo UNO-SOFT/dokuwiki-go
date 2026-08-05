@@ -63,7 +63,8 @@ func Main() error {
 					return err
 				}
 				logger.Info("got", "status", history.Status())
-				json.MarshalWrite(os.Stderr, history.JSON200)
+				json.MarshalWrite(os.Stderr, history.JSON200.Result)
+				os.Stdout.Write([]byte{'\n'})
 			}
 			return nil
 		},
@@ -82,7 +83,7 @@ func Main() error {
 					return err
 				}
 				logger.Info("got", "status", html.Status())
-				os.Stdout.Write([]byte(html.GetJSON200().Result))
+				os.Stdout.Write([]byte(html.GetJSON200().Result + "\n"))
 			}
 			return nil
 		},
@@ -102,6 +103,7 @@ func Main() error {
 				}
 				logger.Info("got", "status", links.Status())
 				json.MarshalWrite(os.Stdout, links.GetJSON200().Result)
+				os.Stdout.Write([]byte{'\n'})
 			}
 			return nil
 		},
@@ -121,6 +123,7 @@ func Main() error {
 				}
 				logger.Info("got", "status", info.Status())
 				json.MarshalWrite(os.Stdout, info.GetJSON200().Result)
+				os.Stdout.Write([]byte{'\n'})
 			}
 			return nil
 		},
@@ -130,9 +133,10 @@ func Main() error {
 
 	flags = ff.NewFlagSet("dump")
 	flagDumpDest := flags.String('o', "output", "", "destination directory")
+	flagDumpForce := flags.Bool('f', "force", "force download")
 	dumpCmd := ff.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
-			d, err := newDumper(cl, wikiURL, *flagDumpDest)
+			d, err := newDumper(cl, wikiURL, *flagDumpDest, *flagDumpForce)
 			if err != nil {
 				return err
 			}

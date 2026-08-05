@@ -19,6 +19,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	dokuwiki "github.com/UNO-SOFT/dokuwiki-go/rest"
@@ -29,19 +30,20 @@ var ErrNotFound = errors.New("not found")
 
 type (
 	dumper struct {
-		seen    map[string]struct{}
-		destDir string
-		base    *url.URL
 		cl      dokuwiki.ClientWithResponsesInterface
+		seen    map[string]struct{}
+		base    *url.URL
+		destDir string
 		mu      sync.Mutex
+		force   bool
 	}
 	element struct {
-		ID, Title      string
-		Revision, Size int
+		ID, Title string
+		Revision  int
 	}
 )
 
-func newDumper(cl dokuwiki.ClientWithResponsesInterface, wikiURL, destDir string) (*dumper, error) {
+func newDumper(cl dokuwiki.ClientWithResponsesInterface, wikiURL, destDir string, force bool) (*dumper, error) {
 	if err := os.MkdirAll(destDir, 0755); err != nil {
 		return nil, err
 	}
@@ -72,23 +74,39 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 			return elt, nil, err
 		}
 		result := resp.GetJSON200().Result
-		elt.ID, elt.Title, elt.Revision, elt.Size = result.Id, result.Title, result.Revision, result.Size
+		elt.ID, elt.Title, elt.Revision = result.Id, result.Title, result.Revision
 	}
-	logger.Info("download", "id", elt.ID, "title", elt.Title)
+	logger := logger.With("id", elt.ID)
 
 	var more []string
 	err := func() error {
-		resp, err := d.cl.CoreGetPageHTMLWithResponse(ctx, dokuwiki.CoreGetPageHTMLJSONRequestBody{Page: elt.ID})
-		if err == nil {
-			err = checkResponse(resp)
+		fn := filepath.Join(d.destDir, id2fn(elt.ID))
+		var body io.Reader
+		if !d.force && elt.Revision != 0 {
+			if fh, err := os.Open(fn); err == nil {
+				defer fh.Close()
+				if fi, err := fh.Stat(); err == nil && fi.Size() != 0 && fi.ModTime().After(time.Unix(int64(elt.Revision), 0)) {
+					logger.Info("skip already fresh", "file", fn)
+					body = fh
+				} else {
+					fh.Close()
+				}
+			}
 		}
-		if err != nil {
-			return err
+		if body == nil {
+			logger.Info("download", "title", elt.Title)
+			resp, err := d.cl.CoreGetPageHTMLWithResponse(ctx, dokuwiki.CoreGetPageHTMLJSONRequestBody{Page: elt.ID})
+			if err == nil {
+				err = checkResponse(resp)
+			}
+			if err != nil {
+				return err
+			}
+			body = strings.NewReader(resp.GetJSON200().Result)
 		}
-		result := resp.GetJSON200().Result
-		doc, err := goquery.NewDocumentFromReader(strings.NewReader(result))
+		doc, err := goquery.NewDocumentFromReader(body)
 		if err != nil {
-			return fmt.Errorf("parse %s: %w", result, err)
+			return fmt.Errorf("parse: %w", err)
 		}
 		var errs []error
 		doc.Find("a[data-wiki-id]").Each(func(_ int, sel *goquery.Selection) {
@@ -99,17 +117,33 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 			more = append(more, a)
 			sel.SetAttr("href", "./"+id2fn(a))
 		})
-		var buf strings.Builder
+		var buf, sty strings.Builder
 		doc.Find("img.media").Each(func(_ int, sel *goquery.Selection) {
 			if err := func() error {
 				src, ok := sel.Attr("src")
 				if !ok {
 					logger.Warn("no src", "at", sel)
 					return nil
+				} else if strings.HasPrefix(src, "data:") {
+					return nil
 				}
+				logger.Info("download", "src", src)
 				ref, err := url.Parse(src)
 				if err != nil {
 					return fmt.Errorf("resolve %s: %w", src, err)
+				}
+				if _, ok := sel.Attr("style"); !ok {
+					q := ref.Query()
+					sty.Reset()
+					for _, k := range []string{"width", "height"} {
+						if s := q.Get(k[:1]); s != "" {
+							sty.WriteString(k)
+							sty.WriteString(": ")
+							sty.WriteString(s)
+							sty.WriteString("; ")
+						}
+					}
+					sel.SetAttr("style", sty.String())
 				}
 				want := d.base.ResolveReference(ref).String()
 				req, err := http.NewRequestWithContext(ctx, "GET", want, nil)
@@ -137,7 +171,6 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 		if err != nil {
 			errs = append(errs, err)
 		} else {
-			fn := filepath.Join(d.destDir, id2fn(elt.ID))
 			os.MkdirAll(filepath.Dir(fn), 0775)
 			errs = append(errs, renameio.WriteFile(fn, []byte(h), 0644))
 		}
