@@ -4,7 +4,7 @@ package dokuwiki
 
 // go : generate curl -o dokuwiki.json -L -sS -m 30 "https://dokuwiki.org/lib/exe/openapi.php?spec=1"
 // go : generate sed -i -e "/\"type\": \"null\"/ s/null/object/" dokuwiki.json
-//go:generate go tool oapi-codegen -package dokuwiki -generate types,client -o dokuwiki_rest.gen.go dokuwiki.json
+//go:generate go tool oapi-codegen -o dokuwiki_rest.gen.go -config cfg.yaml dokuwiki.json
 // go : generate go tool openapi-generator-cli generate --package-name dokuwiki --minimal-update -i dokuwiki.json -g go
 // go : generate rm -f go.*
 //

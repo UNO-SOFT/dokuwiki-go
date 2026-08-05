@@ -19,7 +19,7 @@ type CoreAclCheckJSONBody struct {
 	// Groups array of groups [_default: `[]`_]
 	//
 	// Examples: ["some-groups","other-groups"]
-	Groups *[]string `json:"groups,omitempty"`
+	Groups []string `json:"groups,omitempty,omitzero"`
 
 	// Page A page or media ID
 	//
@@ -29,7 +29,7 @@ type CoreAclCheckJSONBody struct {
 	// User username [_default: `""`_]
 	//
 	// Examples: some-user
-	User *string `json:"user,omitempty"`
+	User string `json:"user,omitempty,omitzero"`
 }
 
 // CoreAppendPageJSONBody defines parameters for CoreAppendPage.
@@ -37,7 +37,7 @@ type CoreAppendPageJSONBody struct {
 	// Isminor whether this is a minor edit [_default: `false`_]
 	//
 	// Examples: true
-	Isminor *bool `json:"isminor,omitempty"`
+	Isminor bool `json:"isminor,omitempty,omitzero"`
 
 	// Page page id
 	//
@@ -47,7 +47,7 @@ type CoreAppendPageJSONBody struct {
 	// Summary edit summary [_default: `""`_]
 	//
 	// Examples: some-summary
-	Summary *string `json:"summary,omitempty"`
+	Summary string `json:"summary,omitempty,omitzero"`
 
 	// Text wiki text
 	//
@@ -76,7 +76,7 @@ type CoreGetMediaJSONBody struct {
 	// Rev revision timestamp [_default: `0`_]
 	//
 	// Examples: 0
-	Rev *int `json:"rev,omitempty"`
+	Rev int `json:"rev,omitempty,omitzero"`
 }
 
 // CoreGetMediaHistoryJSONBody defines parameters for CoreGetMediaHistory.
@@ -84,7 +84,7 @@ type CoreGetMediaHistoryJSONBody struct {
 	// First skip the first n changelog lines, 0 starts at the current revision [_default: `0`_]
 	//
 	// Examples: 42
-	First *int `json:"first,omitempty"`
+	First int `json:"first,omitempty,omitzero"`
 
 	// Media file id
 	//
@@ -97,12 +97,12 @@ type CoreGetMediaInfoJSONBody struct {
 	// Author whether to include the author information [_default: `false`_]
 	//
 	// Examples: true
-	Author *bool `json:"author,omitempty"`
+	Author bool `json:"author,omitempty,omitzero"`
 
 	// Hash whether to include the MD5 hash of the media content [_default: `false`_]
 	//
 	// Examples: true
-	Hash *bool `json:"hash,omitempty"`
+	Hash bool `json:"hash,omitempty,omitzero"`
 
 	// Media file id
 	//
@@ -112,7 +112,7 @@ type CoreGetMediaInfoJSONBody struct {
 	// Rev revision timestamp [_default: `0`_]
 	//
 	// Examples: 0
-	Rev *int `json:"rev,omitempty"`
+	Rev int `json:"rev,omitempty,omitzero"`
 }
 
 // CoreGetMediaUsageJSONBody defines parameters for CoreGetMediaUsage.
@@ -133,7 +133,7 @@ type CoreGetPageJSONBody struct {
 	// Rev Revision timestamp to access an older revision [_default: `0`_]
 	//
 	// Examples: 0
-	Rev *int `json:"rev,omitempty"`
+	Rev int `json:"rev,omitempty,omitzero"`
 }
 
 // CoreGetPageBackLinksJSONBody defines parameters for CoreGetPageBackLinks.
@@ -154,7 +154,7 @@ type CoreGetPageHTMLJSONBody struct {
 	// Rev revision timestamp [_default: `0`_]
 	//
 	// Examples: 0
-	Rev *int `json:"rev,omitempty"`
+	Rev int `json:"rev,omitempty,omitzero"`
 }
 
 // CoreGetPageHistoryJSONBody defines parameters for CoreGetPageHistory.
@@ -162,7 +162,7 @@ type CoreGetPageHistoryJSONBody struct {
 	// First skip the first n changelog lines, 0 starts at the current revision [_default: `0`_]
 	//
 	// Examples: 42
-	First *int `json:"first,omitempty"`
+	First int `json:"first,omitempty,omitzero"`
 
 	// Page page id
 	//
@@ -175,12 +175,12 @@ type CoreGetPageInfoJSONBody struct {
 	// Author whether to include the author information [_default: `false`_]
 	//
 	// Examples: true
-	Author *bool `json:"author,omitempty"`
+	Author bool `json:"author,omitempty,omitzero"`
 
 	// Hash whether to include the MD5 hash of the page content [_default: `false`_]
 	//
 	// Examples: true
-	Hash *bool `json:"hash,omitempty"`
+	Hash bool `json:"hash,omitempty,omitzero"`
 
 	// Page page id
 	//
@@ -190,7 +190,7 @@ type CoreGetPageInfoJSONBody struct {
 	// Rev revision timestamp [_default: `0`_]
 	//
 	// Examples: 0
-	Rev *int `json:"rev,omitempty"`
+	Rev int `json:"rev,omitempty,omitzero"`
 }
 
 // CoreGetPageLinksJSONBody defines parameters for CoreGetPageLinks.
@@ -206,7 +206,7 @@ type CoreGetRecentMediaChangesJSONBody struct {
 	// Timestamp Only show changes newer than this unix timestamp [_default: `0`_]
 	//
 	// Examples: 1772100728
-	Timestamp *int `json:"timestamp,omitempty"`
+	Timestamp int `json:"timestamp,omitempty,omitzero"`
 }
 
 // CoreGetRecentPageChangesJSONBody defines parameters for CoreGetRecentPageChanges.
@@ -214,7 +214,7 @@ type CoreGetRecentPageChangesJSONBody struct {
 	// Timestamp Only show changes newer than this unix timestamp [_default: `0`_]
 	//
 	// Examples: 1772100728
-	Timestamp *int `json:"timestamp,omitempty"`
+	Timestamp int `json:"timestamp,omitempty,omitzero"`
 }
 
 // CoreGetWikiTimeJSONBody defines parameters for CoreGetWikiTime.
@@ -231,22 +231,22 @@ type CoreListMediaJSONBody struct {
 	// Depth How deep to search. 0 for all subnamespaces [_default: `1`_]
 	//
 	// Examples: 42
-	Depth *int `json:"depth,omitempty"`
+	Depth int `json:"depth,omitempty,omitzero"`
 
 	// Hash Whether to include a MD5 hash of the media content [_default: `false`_]
 	//
 	// Examples: true
-	Hash *bool `json:"hash,omitempty"`
+	Hash bool `json:"hash,omitempty,omitzero"`
 
 	// Namespace The namespace to search. Empty string for root namespace [_default: `""`_]
 	//
 	// Examples: some-namespace
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace string `json:"namespace,omitempty,omitzero"`
 
 	// Pattern A regular expression to filter the returned files [_default: `""`_]
 	//
 	// Examples: some-pattern
-	Pattern *string `json:"pattern,omitempty"`
+	Pattern string `json:"pattern,omitempty,omitzero"`
 }
 
 // CoreListPagesJSONBody defines parameters for CoreListPages.
@@ -254,17 +254,17 @@ type CoreListPagesJSONBody struct {
 	// Depth How deep to search. 0 for all subnamespaces [_default: `1`_]
 	//
 	// Examples: 42
-	Depth *int `json:"depth,omitempty"`
+	Depth int `json:"depth,omitempty,omitzero"`
 
 	// Hash Whether to include a MD5 hash of the page content [_default: `false`_]
 	//
 	// Examples: true
-	Hash *bool `json:"hash,omitempty"`
+	Hash bool `json:"hash,omitempty,omitzero"`
 
 	// Namespace The namespace to search. Empty string for root namespace [_default: `""`_]
 	//
 	// Examples: some-namespace
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace string `json:"namespace,omitempty,omitzero"`
 }
 
 // CoreLockPagesJSONBody defines parameters for CoreLockPages.
@@ -306,7 +306,7 @@ type CoreSaveMediaJSONBody struct {
 	// Overwrite Should an existing file be overwritten? [_default: `false`_]
 	//
 	// Examples: true
-	Overwrite *bool `json:"overwrite,omitempty"`
+	Overwrite bool `json:"overwrite,omitempty,omitzero"`
 }
 
 // CoreSavePageJSONBody defines parameters for CoreSavePage.
@@ -314,7 +314,7 @@ type CoreSavePageJSONBody struct {
 	// Isminor whether this is a minor edit [_default: `false`_]
 	//
 	// Examples: true
-	Isminor *bool `json:"isminor,omitempty"`
+	Isminor bool `json:"isminor,omitempty,omitzero"`
 
 	// Page page id
 	//
@@ -324,7 +324,7 @@ type CoreSavePageJSONBody struct {
 	// Summary edit summary [_default: `""`_]
 	//
 	// Examples: some-summary
-	Summary *string `json:"summary,omitempty"`
+	Summary string `json:"summary,omitempty,omitzero"`
 
 	// Text wiki text
 	//
@@ -359,7 +359,7 @@ type DokuwikiAppendPageJSONBody struct {
 	// Params  [_default: `[]`_]
 	//
 	// Examples: some-params
-	Params *string `json:"params,omitempty"`
+	Params string `json:"params,omitempty,omitzero"`
 
 	// Text Examples: some-text
 	Text string `json:"text"`
@@ -385,7 +385,7 @@ type DokuwikiGetPagelistJSONBody struct {
 	// Opts  [_default: `[]`_]
 	//
 	// Examples: some-opts
-	Opts *string `json:"opts,omitempty"`
+	Opts string `json:"opts,omitempty,omitzero"`
 }
 
 // DokuwikiGetTimeJSONBody defines parameters for DokuwikiGetTime.
@@ -463,12 +463,12 @@ type PluginAichatAskJSONBody struct {
 	// Lang Language code to override preferUIlanguage setting. "auto" to force autodetection. [_default: `""`_]
 	//
 	// Examples: some-lang
-	Lang *string `json:"lang,omitempty"`
+	Lang string `json:"lang,omitempty,omitzero"`
 
 	// Model The model to use, if empty the default model is used [_default: `""`_]
 	//
 	// Examples: some-model
-	Model *string `json:"model,omitempty"`
+	Model string `json:"model,omitempty,omitzero"`
 
 	// Query The question to ask the LLM
 	//
@@ -481,12 +481,12 @@ type PluginAichatSimilarJSONBody struct {
 	// Lang Language code to override preferUIlanguage setting. "auto" to force autodetection. [_default: `""`_]
 	//
 	// Examples: some-lang
-	Lang *string `json:"lang,omitempty"`
+	Lang string `json:"lang,omitempty,omitzero"`
 
 	// Max Maximum number of results to return. -1 for default set in config [_default: `-1`_]
 	//
 	// Examples: 42
-	Max *int `json:"max,omitempty"`
+	Max int `json:"max,omitempty,omitzero"`
 
 	// Query Examples: some-query
 	Query string `json:"query"`
@@ -494,7 +494,7 @@ type PluginAichatSimilarJSONBody struct {
 	// Threshold Minimum similarity score to return results for. -1 for default set in config [_default: `-1`_]
 	//
 	// Examples: {}
-	Threshold *float32 `json:"threshold,omitempty"`
+	Threshold float32 `json:"threshold,omitempty,omitzero"`
 }
 
 // PluginExtensionDisableJSONBody defines parameters for PluginExtensionDisable.
@@ -529,7 +529,7 @@ type PluginExtensionSearchJSONBody struct {
 	// Max Maximum number of results (default 10) [_default: `10`_]
 	//
 	// Examples: 42
-	Max *int `json:"max,omitempty"`
+	Max int `json:"max,omitempty,omitzero"`
 
 	// Query The keyword(s) to search for
 	//
@@ -591,12 +591,12 @@ type PluginUsermanagerCreateUserJSONBody struct {
 	// Notify Whether to send a notification email to the user [_default: `false`_]
 	//
 	// Examples: true
-	Notify *bool `json:"notify,omitempty"`
+	Notify bool `json:"notify,omitempty,omitzero"`
 
 	// Password The user's password, empty for autogeneration [_default: `""`_]
 	//
 	// Examples: some-password
-	Password *string `json:"password,omitempty"`
+	Password string `json:"password,omitempty,omitzero"`
 
 	// User The user's login name
 	//
@@ -615,13 +615,13 @@ type PluginUsermanagerDeleteUserJSONBody struct {
 // WikiAclCheckJSONBody defines parameters for WikiAclCheck.
 type WikiAclCheckJSONBody struct {
 	// Groups Examples: some-groups
-	Groups *string `json:"groups,omitempty"`
+	Groups string `json:"groups,omitempty,omitzero"`
 
 	// Id Examples: some-id
 	Id string `json:"id"`
 
 	// User Examples: some-user
-	User *string `json:"user,omitempty"`
+	User string `json:"user,omitempty,omitzero"`
 }
 
 // WikiDeleteAttachmentJSONBody defines parameters for WikiDeleteAttachment.
@@ -653,7 +653,7 @@ type WikiGetAttachmentsJSONBody struct {
 	// Options  [_default: `[]`_]
 	//
 	// Examples: some-options
-	Options *string `json:"options,omitempty"`
+	Options string `json:"options,omitempty,omitzero"`
 }
 
 // WikiGetBackLinksJSONBody defines parameters for WikiGetBackLinks.
@@ -682,7 +682,7 @@ type WikiGetPageHTMLVersionJSONBody struct {
 	// Rev  [_default: `""`_]
 	//
 	// Examples: some-rev
-	Rev *string `json:"rev,omitempty"`
+	Rev string `json:"rev,omitempty,omitzero"`
 }
 
 // WikiGetPageInfoJSONBody defines parameters for WikiGetPageInfo.
@@ -699,7 +699,7 @@ type WikiGetPageInfoVersionJSONBody struct {
 	// Rev  [_default: `""`_]
 	//
 	// Examples: some-rev
-	Rev *string `json:"rev,omitempty"`
+	Rev string `json:"rev,omitempty,omitzero"`
 }
 
 // WikiGetPageVersionJSONBody defines parameters for WikiGetPageVersion.
@@ -710,7 +710,7 @@ type WikiGetPageVersionJSONBody struct {
 	// Rev  [_default: `""`_]
 	//
 	// Examples: some-rev
-	Rev *string `json:"rev,omitempty"`
+	Rev string `json:"rev,omitempty,omitzero"`
 }
 
 // WikiGetPageVersionsJSONBody defines parameters for WikiGetPageVersions.
@@ -718,7 +718,7 @@ type WikiGetPageVersionsJSONBody struct {
 	// First  [_default: `0`_]
 	//
 	// Examples: some-first
-	First *string `json:"first,omitempty"`
+	First string `json:"first,omitempty,omitzero"`
 
 	// Id Examples: some-id
 	Id string `json:"id"`
@@ -756,7 +756,7 @@ type WikiPutAttachmentJSONBody struct {
 	// Params  [_default: `[]`_]
 	//
 	// Examples: some-params
-	Params *string `json:"params,omitempty"`
+	Params string `json:"params,omitempty,omitzero"`
 }
 
 // WikiPutPageJSONBody defines parameters for WikiPutPage.
@@ -767,7 +767,7 @@ type WikiPutPageJSONBody struct {
 	// Params  [_default: `[]`_]
 	//
 	// Examples: some-params
-	Params *string `json:"params,omitempty"`
+	Params string `json:"params,omitempty,omitzero"`
 
 	// Text Examples: some-text
 	Text string `json:"text"`
@@ -11047,44 +11047,44 @@ type CoreAclCheckResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result permission level
 		//
 		// Examples: 42
-		Result *int `json:"result,omitempty"`
+		Result int `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreAclCheckResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result permission level
 	//
 	// Examples: 42
-	Result *int `json:"result,omitempty"`
+	Result int `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11124,44 +11124,44 @@ type CoreAppendPageResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Returns true on success
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreAppendPageResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Returns true on success
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11201,44 +11201,44 @@ type CoreDeleteMediaResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Should always be true
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreDeleteMediaResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Should always be true
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11278,40 +11278,40 @@ type CoreGetAPIVersionResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: 42
-		Result *int `json:"result,omitempty"`
+		Result int `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetAPIVersionResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: 42
-	Result *int `json:"result,omitempty"`
+	Result int `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11351,44 +11351,44 @@ type CoreGetMediaResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Base64 encoded media file contents
 		//
 		// Examples: some-result
-		Result *string `json:"result,omitempty"`
+		Result string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetMediaResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Base64 encoded media file contents
 	//
 	// Examples: some-result
-	Result *string `json:"result,omitempty"`
+	Result string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11428,82 +11428,82 @@ type CoreGetMediaHistoryResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Author The author of this change
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Id The media ID
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Ip The IP address from where this change was made
-			Ip *string `json:"ip,omitempty"`
+			Ip string `json:"ip,omitempty,omitzero"`
 
 			// Revision The revision (timestamp) of this change
-			Revision *int `json:"revision,omitempty"`
+			Revision int `json:"revision,omitempty,omitzero"`
 
 			// Sizechange The change in bytes
-			Sizechange *int `json:"sizechange,omitempty"`
+			Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 			// Summary The summary of this change
-			Summary *string `json:"summary,omitempty"`
+			Summary string `json:"summary,omitempty,omitzero"`
 
 			// Type The type of this change
-			Type *string `json:"type,omitempty"`
-		} `json:"result,omitempty"`
+			Type string `json:"type,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetMediaHistoryResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Author The author of this change
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Id The media ID
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Ip The IP address from where this change was made
-		Ip *string `json:"ip,omitempty"`
+		Ip string `json:"ip,omitempty,omitzero"`
 
 		// Revision The revision (timestamp) of this change
-		Revision *int `json:"revision,omitempty"`
+		Revision int `json:"revision,omitempty,omitzero"`
 
 		// Sizechange The change in bytes
-		Sizechange *int `json:"sizechange,omitempty"`
+		Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 		// Summary The summary of this change
-		Summary *string `json:"summary,omitempty"`
+		Summary string `json:"summary,omitempty,omitzero"`
 
 		// Type The type of this change
-		Type *string `json:"type,omitempty"`
-	} `json:"result,omitempty"`
+		Type string `json:"type,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11543,82 +11543,82 @@ type CoreGetMediaInfoResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *struct {
+		Result struct {
 			// Author The author of this page revision (if available and requested)
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Hash MD5 sum over the file's content (if available and requested)
-			Hash *string `json:"hash,omitempty"`
+			Hash string `json:"hash,omitempty,omitzero"`
 
 			// Id The media ID
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Isimage Wether this is an image file
-			Isimage *bool `json:"isimage,omitempty"`
+			Isimage bool `json:"isimage,omitempty,omitzero"`
 
 			// Permission The current user's permissions for this file
-			Permission *int `json:"permission,omitempty"`
+			Permission int `json:"permission,omitempty,omitzero"`
 
 			// Revision The media revision aka last modified timestamp
-			Revision *int `json:"revision,omitempty"`
+			Revision int `json:"revision,omitempty,omitzero"`
 
 			// Size The page size in bytes
-			Size *int `json:"size,omitempty"`
-		} `json:"result,omitempty"`
+			Size int `json:"size,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetMediaInfoResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *struct {
+	Result struct {
 		// Author The author of this page revision (if available and requested)
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Hash MD5 sum over the file's content (if available and requested)
-		Hash *string `json:"hash,omitempty"`
+		Hash string `json:"hash,omitempty,omitzero"`
 
 		// Id The media ID
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Isimage Wether this is an image file
-		Isimage *bool `json:"isimage,omitempty"`
+		Isimage bool `json:"isimage,omitempty,omitzero"`
 
 		// Permission The current user's permissions for this file
-		Permission *int `json:"permission,omitempty"`
+		Permission int `json:"permission,omitempty,omitzero"`
 
 		// Revision The media revision aka last modified timestamp
-		Revision *int `json:"revision,omitempty"`
+		Revision int `json:"revision,omitempty,omitzero"`
 
 		// Size The page size in bytes
-		Size *int `json:"size,omitempty"`
-	} `json:"result,omitempty"`
+		Size int `json:"size,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11658,44 +11658,44 @@ type CoreGetMediaUsageResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result A list of pages linking to the given page
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]string `json:"result,omitempty"`
+		Result []string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetMediaUsageResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result A list of pages linking to the given page
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]string `json:"result,omitempty"`
+	Result []string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11735,44 +11735,44 @@ type CoreGetPageResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result the syntax of the page
 		//
 		// Examples: some-result
-		Result *string `json:"result,omitempty"`
+		Result string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetPageResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result the syntax of the page
 	//
 	// Examples: some-result
-	Result *string `json:"result,omitempty"`
+	Result string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11812,44 +11812,44 @@ type CoreGetPageBackLinksResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result A list of pages linking to the given page
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]string `json:"result,omitempty"`
+		Result []string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetPageBackLinksResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result A list of pages linking to the given page
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]string `json:"result,omitempty"`
+	Result []string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11889,44 +11889,44 @@ type CoreGetPageHTMLResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Rendered HTML for the page
 		//
 		// Examples: some-result
-		Result *string `json:"result,omitempty"`
+		Result string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetPageHTMLResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Rendered HTML for the page
 	//
 	// Examples: some-result
-	Result *string `json:"result,omitempty"`
+	Result string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -11966,82 +11966,82 @@ type CoreGetPageHistoryResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Author The author of this change
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Id The page ID
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Ip The IP address from where this change was made
-			Ip *string `json:"ip,omitempty"`
+			Ip string `json:"ip,omitempty,omitzero"`
 
 			// Revision The revision (timestamp) of this change
-			Revision *int `json:"revision,omitempty"`
+			Revision int `json:"revision,omitempty,omitzero"`
 
 			// Sizechange The change in bytes
-			Sizechange *int `json:"sizechange,omitempty"`
+			Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 			// Summary The summary of this change
-			Summary *string `json:"summary,omitempty"`
+			Summary string `json:"summary,omitempty,omitzero"`
 
 			// Type The type of this change
-			Type *string `json:"type,omitempty"`
-		} `json:"result,omitempty"`
+			Type string `json:"type,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetPageHistoryResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Author The author of this change
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Id The page ID
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Ip The IP address from where this change was made
-		Ip *string `json:"ip,omitempty"`
+		Ip string `json:"ip,omitempty,omitzero"`
 
 		// Revision The revision (timestamp) of this change
-		Revision *int `json:"revision,omitempty"`
+		Revision int `json:"revision,omitempty,omitzero"`
 
 		// Sizechange The change in bytes
-		Sizechange *int `json:"sizechange,omitempty"`
+		Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 		// Summary The summary of this change
-		Summary *string `json:"summary,omitempty"`
+		Summary string `json:"summary,omitempty,omitzero"`
 
 		// Type The type of this change
-		Type *string `json:"type,omitempty"`
-	} `json:"result,omitempty"`
+		Type string `json:"type,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12081,82 +12081,82 @@ type CoreGetPageInfoResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *struct {
+		Result struct {
 			// Author The author of this page revision (if available and requested)
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Hash MD5 sum over the page's content (if available and requested)
-			Hash *string `json:"hash,omitempty"`
+			Hash string `json:"hash,omitempty,omitzero"`
 
 			// Id The page ID
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Permission The current user's permissions for this page
-			Permission *int `json:"permission,omitempty"`
+			Permission int `json:"permission,omitempty,omitzero"`
 
 			// Revision The page revision aka last modified timestamp
-			Revision *int `json:"revision,omitempty"`
+			Revision int `json:"revision,omitempty,omitzero"`
 
 			// Size The page size in bytes
-			Size *int `json:"size,omitempty"`
+			Size int `json:"size,omitempty,omitzero"`
 
 			// Title The page title
-			Title *string `json:"title,omitempty"`
-		} `json:"result,omitempty"`
+			Title string `json:"title,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetPageInfoResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *struct {
+	Result struct {
 		// Author The author of this page revision (if available and requested)
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Hash MD5 sum over the page's content (if available and requested)
-		Hash *string `json:"hash,omitempty"`
+		Hash string `json:"hash,omitempty,omitzero"`
 
 		// Id The page ID
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Permission The current user's permissions for this page
-		Permission *int `json:"permission,omitempty"`
+		Permission int `json:"permission,omitempty,omitzero"`
 
 		// Revision The page revision aka last modified timestamp
-		Revision *int `json:"revision,omitempty"`
+		Revision int `json:"revision,omitempty,omitzero"`
 
 		// Size The page size in bytes
-		Size *int `json:"size,omitempty"`
+		Size int `json:"size,omitempty,omitzero"`
 
 		// Title The page title
-		Title *string `json:"title,omitempty"`
-	} `json:"result,omitempty"`
+		Title string `json:"title,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12196,62 +12196,62 @@ type CoreGetPageLinksResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result A list of links found on the given page
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Href A hyperlink pointing to the linked target
-			Href *string `json:"href,omitempty"`
+			Href string `json:"href,omitempty,omitzero"`
 
 			// Page The wiki page this link points to, same as `href` for external links
-			Page *string `json:"page,omitempty"`
+			Page string `json:"page,omitempty,omitzero"`
 
 			// Type The type of this link: `internal`, `external` or `interwiki`
-			Type *string `json:"type,omitempty"`
-		} `json:"result,omitempty"`
+			Type string `json:"type,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetPageLinksResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result A list of links found on the given page
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Href A hyperlink pointing to the linked target
-		Href *string `json:"href,omitempty"`
+		Href string `json:"href,omitempty,omitzero"`
 
 		// Page The wiki page this link points to, same as `href` for external links
-		Page *string `json:"page,omitempty"`
+		Page string `json:"page,omitempty,omitzero"`
 
 		// Type The type of this link: `internal`, `external` or `interwiki`
-		Type *string `json:"type,omitempty"`
-	} `json:"result,omitempty"`
+		Type string `json:"type,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12291,82 +12291,82 @@ type CoreGetRecentMediaChangesResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Author The author of this change
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Id The media ID
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Ip The IP address from where this change was made
-			Ip *string `json:"ip,omitempty"`
+			Ip string `json:"ip,omitempty,omitzero"`
 
 			// Revision The revision (timestamp) of this change
-			Revision *int `json:"revision,omitempty"`
+			Revision int `json:"revision,omitempty,omitzero"`
 
 			// Sizechange The change in bytes
-			Sizechange *int `json:"sizechange,omitempty"`
+			Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 			// Summary The summary of this change
-			Summary *string `json:"summary,omitempty"`
+			Summary string `json:"summary,omitempty,omitzero"`
 
 			// Type The type of this change
-			Type *string `json:"type,omitempty"`
-		} `json:"result,omitempty"`
+			Type string `json:"type,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetRecentMediaChangesResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Author The author of this change
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Id The media ID
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Ip The IP address from where this change was made
-		Ip *string `json:"ip,omitempty"`
+		Ip string `json:"ip,omitempty,omitzero"`
 
 		// Revision The revision (timestamp) of this change
-		Revision *int `json:"revision,omitempty"`
+		Revision int `json:"revision,omitempty,omitzero"`
 
 		// Sizechange The change in bytes
-		Sizechange *int `json:"sizechange,omitempty"`
+		Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 		// Summary The summary of this change
-		Summary *string `json:"summary,omitempty"`
+		Summary string `json:"summary,omitempty,omitzero"`
 
 		// Type The type of this change
-		Type *string `json:"type,omitempty"`
-	} `json:"result,omitempty"`
+		Type string `json:"type,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12406,82 +12406,82 @@ type CoreGetRecentPageChangesResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Author The author of this change
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Id The page ID
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Ip The IP address from where this change was made
-			Ip *string `json:"ip,omitempty"`
+			Ip string `json:"ip,omitempty,omitzero"`
 
 			// Revision The revision (timestamp) of this change
-			Revision *int `json:"revision,omitempty"`
+			Revision int `json:"revision,omitempty,omitzero"`
 
 			// Sizechange The change in bytes
-			Sizechange *int `json:"sizechange,omitempty"`
+			Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 			// Summary The summary of this change
-			Summary *string `json:"summary,omitempty"`
+			Summary string `json:"summary,omitempty,omitzero"`
 
 			// Type The type of this change
-			Type *string `json:"type,omitempty"`
-		} `json:"result,omitempty"`
+			Type string `json:"type,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetRecentPageChangesResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Author The author of this change
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Id The page ID
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Ip The IP address from where this change was made
-		Ip *string `json:"ip,omitempty"`
+		Ip string `json:"ip,omitempty,omitzero"`
 
 		// Revision The revision (timestamp) of this change
-		Revision *int `json:"revision,omitempty"`
+		Revision int `json:"revision,omitempty,omitzero"`
 
 		// Sizechange The change in bytes
-		Sizechange *int `json:"sizechange,omitempty"`
+		Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 		// Summary The summary of this change
-		Summary *string `json:"summary,omitempty"`
+		Summary string `json:"summary,omitempty,omitzero"`
 
 		// Type The type of this change
-		Type *string `json:"type,omitempty"`
-	} `json:"result,omitempty"`
+		Type string `json:"type,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12521,44 +12521,44 @@ type CoreGetWikiTimeResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result A unix timestamp
 		//
 		// Examples: 42
-		Result *int `json:"result,omitempty"`
+		Result int `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetWikiTimeResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result A unix timestamp
 	//
 	// Examples: 42
-	Result *int `json:"result,omitempty"`
+	Result int `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12598,40 +12598,40 @@ type CoreGetWikiTitleResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: some-result
-		Result *string `json:"result,omitempty"`
+		Result string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetWikiTitleResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: some-result
-	Result *string `json:"result,omitempty"`
+	Result string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12671,44 +12671,44 @@ type CoreGetWikiVersionResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result The version string e.g. "Release 2023-04-04a"
 		//
 		// Examples: some-result
-		Result *string `json:"result,omitempty"`
+		Result string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreGetWikiVersionResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result The version string e.g. "Release 2023-04-04a"
 	//
 	// Examples: some-result
-	Result *string `json:"result,omitempty"`
+	Result string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12748,82 +12748,82 @@ type CoreListMediaResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Author The author of this page revision (if available and requested)
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Hash MD5 sum over the file's content (if available and requested)
-			Hash *string `json:"hash,omitempty"`
+			Hash string `json:"hash,omitempty,omitzero"`
 
 			// Id The media ID
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Isimage Wether this is an image file
-			Isimage *bool `json:"isimage,omitempty"`
+			Isimage bool `json:"isimage,omitempty,omitzero"`
 
 			// Permission The current user's permissions for this file
-			Permission *int `json:"permission,omitempty"`
+			Permission int `json:"permission,omitempty,omitzero"`
 
 			// Revision The media revision aka last modified timestamp
-			Revision *int `json:"revision,omitempty"`
+			Revision int `json:"revision,omitempty,omitzero"`
 
 			// Size The page size in bytes
-			Size *int `json:"size,omitempty"`
-		} `json:"result,omitempty"`
+			Size int `json:"size,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreListMediaResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Author The author of this page revision (if available and requested)
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Hash MD5 sum over the file's content (if available and requested)
-		Hash *string `json:"hash,omitempty"`
+		Hash string `json:"hash,omitempty,omitzero"`
 
 		// Id The media ID
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Isimage Wether this is an image file
-		Isimage *bool `json:"isimage,omitempty"`
+		Isimage bool `json:"isimage,omitempty,omitzero"`
 
 		// Permission The current user's permissions for this file
-		Permission *int `json:"permission,omitempty"`
+		Permission int `json:"permission,omitempty,omitzero"`
 
 		// Revision The media revision aka last modified timestamp
-		Revision *int `json:"revision,omitempty"`
+		Revision int `json:"revision,omitempty,omitzero"`
 
 		// Size The page size in bytes
-		Size *int `json:"size,omitempty"`
-	} `json:"result,omitempty"`
+		Size int `json:"size,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12863,86 +12863,86 @@ type CoreListPagesResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result A list of matching pages
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Author The author of this page revision (if available and requested)
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Hash MD5 sum over the page's content (if available and requested)
-			Hash *string `json:"hash,omitempty"`
+			Hash string `json:"hash,omitempty,omitzero"`
 
 			// Id The page ID
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Permission The current user's permissions for this page
-			Permission *int `json:"permission,omitempty"`
+			Permission int `json:"permission,omitempty,omitzero"`
 
 			// Revision The page revision aka last modified timestamp
-			Revision *int `json:"revision,omitempty"`
+			Revision int `json:"revision,omitempty,omitzero"`
 
 			// Size The page size in bytes
-			Size *int `json:"size,omitempty"`
+			Size int `json:"size,omitempty,omitzero"`
 
 			// Title The page title
-			Title *string `json:"title,omitempty"`
-		} `json:"result,omitempty"`
+			Title string `json:"title,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreListPagesResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result A list of matching pages
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Author The author of this page revision (if available and requested)
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Hash MD5 sum over the page's content (if available and requested)
-		Hash *string `json:"hash,omitempty"`
+		Hash string `json:"hash,omitempty,omitzero"`
 
 		// Id The page ID
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Permission The current user's permissions for this page
-		Permission *int `json:"permission,omitempty"`
+		Permission int `json:"permission,omitempty,omitzero"`
 
 		// Revision The page revision aka last modified timestamp
-		Revision *int `json:"revision,omitempty"`
+		Revision int `json:"revision,omitempty,omitzero"`
 
 		// Size The page size in bytes
-		Size *int `json:"size,omitempty"`
+		Size int `json:"size,omitempty,omitzero"`
 
 		// Title The page title
-		Title *string `json:"title,omitempty"`
-	} `json:"result,omitempty"`
+		Title string `json:"title,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -12982,44 +12982,44 @@ type CoreLockPagesResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result A list of pages that were successfully locked
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]string `json:"result,omitempty"`
+		Result []string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreLockPagesResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result A list of pages that were successfully locked
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]string `json:"result,omitempty"`
+	Result []string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13059,44 +13059,44 @@ type CoreLoginResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result If the login was successful
 		//
 		// Examples: 42
-		Result *int `json:"result,omitempty"`
+		Result int `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreLoginResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result If the login was successful
 	//
 	// Examples: 42
-	Result *int `json:"result,omitempty"`
+	Result int `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13136,44 +13136,44 @@ type CoreLogoffResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result 0 on failure, 1 on success
 		//
 		// Examples: 42
-		Result *int `json:"result,omitempty"`
+		Result int `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreLogoffResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result 0 on failure, 1 on success
 	//
 	// Examples: 42
-	Result *int `json:"result,omitempty"`
+	Result int `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13213,44 +13213,44 @@ type CoreSaveMediaResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Should always be true
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreSaveMediaResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Should always be true
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13290,44 +13290,44 @@ type CoreSavePageResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Returns true on success
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreSavePageResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Returns true on success
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13367,98 +13367,98 @@ type CoreSearchPagesResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result A list of matching pages
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Author Not available for search results
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Hash Not available for search results
-			Hash *string `json:"hash,omitempty"`
+			Hash string `json:"hash,omitempty,omitzero"`
 
 			// Id The page ID
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Permission The current user's permissions for this page
-			Permission *int `json:"permission,omitempty"`
+			Permission int `json:"permission,omitempty,omitzero"`
 
 			// Revision The page revision aka last modified timestamp
-			Revision *int `json:"revision,omitempty"`
+			Revision int `json:"revision,omitempty,omitzero"`
 
 			// Score The number of hits this result got
-			Score *int `json:"score,omitempty"`
+			Score int `json:"score,omitempty,omitzero"`
 
 			// Size The page size in bytes
-			Size *int `json:"size,omitempty"`
+			Size int `json:"size,omitempty,omitzero"`
 
 			// Snippet The HTML formatted snippet in which the search term was found (if available)
-			Snippet *string `json:"snippet,omitempty"`
+			Snippet string `json:"snippet,omitempty,omitzero"`
 
 			// Title The page title
-			Title *string `json:"title,omitempty"`
-		} `json:"result,omitempty"`
+			Title string `json:"title,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreSearchPagesResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result A list of matching pages
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Author Not available for search results
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Hash Not available for search results
-		Hash *string `json:"hash,omitempty"`
+		Hash string `json:"hash,omitempty,omitzero"`
 
 		// Id The page ID
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Permission The current user's permissions for this page
-		Permission *int `json:"permission,omitempty"`
+		Permission int `json:"permission,omitempty,omitzero"`
 
 		// Revision The page revision aka last modified timestamp
-		Revision *int `json:"revision,omitempty"`
+		Revision int `json:"revision,omitempty,omitzero"`
 
 		// Score The number of hits this result got
-		Score *int `json:"score,omitempty"`
+		Score int `json:"score,omitempty,omitzero"`
 
 		// Size The page size in bytes
-		Size *int `json:"size,omitempty"`
+		Size int `json:"size,omitempty,omitzero"`
 
 		// Snippet The HTML formatted snippet in which the search term was found (if available)
-		Snippet *string `json:"snippet,omitempty"`
+		Snippet string `json:"snippet,omitempty,omitzero"`
 
 		// Title The page title
-		Title *string `json:"title,omitempty"`
-	} `json:"result,omitempty"`
+		Title string `json:"title,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13498,44 +13498,44 @@ type CoreUnlockPagesResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result A list of pages that were successfully unlocked
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]string `json:"result,omitempty"`
+		Result []string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreUnlockPagesResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result A list of pages that were successfully unlocked
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]string `json:"result,omitempty"`
+	Result []string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13575,76 +13575,76 @@ type CoreWhoAmIResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *struct {
+		Result struct {
 			// Groups The groups the user is in
-			Groups *[]string `json:"groups,omitempty"`
+			Groups []string `json:"groups,omitempty,omitzero"`
 
 			// Isadmin Whether the user is a super user
-			Isadmin *bool `json:"isadmin,omitempty"`
+			Isadmin bool `json:"isadmin,omitempty,omitzero"`
 
 			// Ismanager Whether the user is a manager
-			Ismanager *bool `json:"ismanager,omitempty"`
+			Ismanager bool `json:"ismanager,omitempty,omitzero"`
 
 			// Login The login name of the user
-			Login *string `json:"login,omitempty"`
+			Login string `json:"login,omitempty,omitzero"`
 
 			// Mail The email address of the user
-			Mail *string `json:"mail,omitempty"`
+			Mail string `json:"mail,omitempty,omitzero"`
 
 			// Name The full name of the user
-			Name *string `json:"name,omitempty"`
-		} `json:"result,omitempty"`
+			Name string `json:"name,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r CoreWhoAmIResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *struct {
+	Result struct {
 		// Groups The groups the user is in
-		Groups *[]string `json:"groups,omitempty"`
+		Groups []string `json:"groups,omitempty,omitzero"`
 
 		// Isadmin Whether the user is a super user
-		Isadmin *bool `json:"isadmin,omitempty"`
+		Isadmin bool `json:"isadmin,omitempty,omitzero"`
 
 		// Ismanager Whether the user is a manager
-		Ismanager *bool `json:"ismanager,omitempty"`
+		Ismanager bool `json:"ismanager,omitempty,omitzero"`
 
 		// Login The login name of the user
-		Login *string `json:"login,omitempty"`
+		Login string `json:"login,omitempty,omitzero"`
 
 		// Mail The email address of the user
-		Mail *string `json:"mail,omitempty"`
+		Mail string `json:"mail,omitempty,omitzero"`
 
 		// Name The full name of the user
-		Name *string `json:"name,omitempty"`
-	} `json:"result,omitempty"`
+		Name string `json:"name,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13684,40 +13684,40 @@ type DokuwikiAppendPageResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiAppendPageResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13757,40 +13757,40 @@ type DokuwikiCreateUserResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiCreateUserResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13830,40 +13830,40 @@ type DokuwikiDeleteUsersResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiDeleteUsersResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13903,40 +13903,40 @@ type DokuwikiGetPagelistResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiGetPagelistResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -13976,40 +13976,40 @@ type DokuwikiGetTimeResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiGetTimeResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14049,40 +14049,40 @@ type DokuwikiGetTitleResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiGetTitleResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14122,40 +14122,40 @@ type DokuwikiGetVersionResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiGetVersionResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14195,40 +14195,40 @@ type DokuwikiGetXMLRPCAPIVersionResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiGetXMLRPCAPIVersionResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14268,40 +14268,40 @@ type DokuwikiLoginResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiLoginResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14341,40 +14341,40 @@ type DokuwikiLogoffResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiLogoffResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14414,40 +14414,40 @@ type DokuwikiSearchResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiSearchResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14487,40 +14487,40 @@ type DokuwikiSetLocksResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r DokuwikiSetLocksResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14560,44 +14560,44 @@ type PluginAclAddAclResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result If adding the ACL rule was successful
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginAclAddAclResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result If adding the ACL rule was successful
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14637,44 +14637,44 @@ type PluginAclDelAclResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result If removing the ACL rule was successful
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginAclDelAclResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result If removing the ACL rule was successful
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14714,44 +14714,44 @@ type PluginAclListAclsResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result {Scope: ACL}, where ACL = dictionnary {user/group: permissions_int}
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]interface{} `json:"result,omitempty"`
+		Result []interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginAclListAclsResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result {Scope: ACL}, where ACL = dictionnary {user/group: permissions_int}
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]interface{} `json:"result,omitempty"`
+	Result []interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14791,88 +14791,88 @@ type PluginAichatAskResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *struct {
+		Result struct {
 			// Answer The answer provided by the LLM
-			Answer *string `json:"answer,omitempty"`
+			Answer string `json:"answer,omitempty,omitzero"`
 
 			// Question The question as asked
-			Question *string `json:"question,omitempty"`
+			Question string `json:"question,omitempty,omitzero"`
 
 			// Sources The sources provided to the model to answer the questions
-			Sources *[]struct {
+			Sources []struct {
 				// Id The chunk id of the source (pages are split into chunks)
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Lang The language of the source
-				Lang *string `json:"lang,omitempty"`
+				Lang string `json:"lang,omitempty,omitzero"`
 
 				// Page The page id of the source
-				Page *string `json:"page,omitempty"`
+				Page string `json:"page,omitempty,omitzero"`
 
 				// Score The similarity score of this source to the query (between 0 and 1)
-				Score *float32 `json:"score,omitempty"`
+				Score float32 `json:"score,omitempty,omitzero"`
 
 				// Title The title of the source page
-				Title *string `json:"title,omitempty"`
-			} `json:"sources,omitempty"`
-		} `json:"result,omitempty"`
+				Title string `json:"title,omitempty,omitzero"`
+			} `json:"sources,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginAichatAskResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *struct {
+	Result struct {
 		// Answer The answer provided by the LLM
-		Answer *string `json:"answer,omitempty"`
+		Answer string `json:"answer,omitempty,omitzero"`
 
 		// Question The question as asked
-		Question *string `json:"question,omitempty"`
+		Question string `json:"question,omitempty,omitzero"`
 
 		// Sources The sources provided to the model to answer the questions
-		Sources *[]struct {
+		Sources []struct {
 			// Id The chunk id of the source (pages are split into chunks)
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Lang The language of the source
-			Lang *string `json:"lang,omitempty"`
+			Lang string `json:"lang,omitempty,omitzero"`
 
 			// Page The page id of the source
-			Page *string `json:"page,omitempty"`
+			Page string `json:"page,omitempty,omitzero"`
 
 			// Score The similarity score of this source to the query (between 0 and 1)
-			Score *float32 `json:"score,omitempty"`
+			Score float32 `json:"score,omitempty,omitzero"`
 
 			// Title The title of the source page
-			Title *string `json:"title,omitempty"`
-		} `json:"sources,omitempty"`
-	} `json:"result,omitempty"`
+			Title string `json:"title,omitempty,omitzero"`
+		} `json:"sources,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -14912,74 +14912,74 @@ type PluginAichatSimilarResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result A list of similar chunks
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Id The chunk id of the source (pages are split into chunks)
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// Lang The language of the source
-			Lang *string `json:"lang,omitempty"`
+			Lang string `json:"lang,omitempty,omitzero"`
 
 			// Page The page id of the source
-			Page *string `json:"page,omitempty"`
+			Page string `json:"page,omitempty,omitzero"`
 
 			// Score The similarity score of this source to the query (between 0 and 1)
-			Score *float32 `json:"score,omitempty"`
+			Score float32 `json:"score,omitempty,omitzero"`
 
 			// Title The title of the source page
-			Title *string `json:"title,omitempty"`
-		} `json:"result,omitempty"`
+			Title string `json:"title,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginAichatSimilarResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result A list of similar chunks
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Id The chunk id of the source (pages are split into chunks)
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// Lang The language of the source
-		Lang *string `json:"lang,omitempty"`
+		Lang string `json:"lang,omitempty,omitzero"`
 
 		// Page The page id of the source
-		Page *string `json:"page,omitempty"`
+		Page string `json:"page,omitempty,omitzero"`
 
 		// Score The similarity score of this source to the query (between 0 and 1)
-		Score *float32 `json:"score,omitempty"`
+		Score float32 `json:"score,omitempty,omitzero"`
 
 		// Title The title of the source page
-		Title *string `json:"title,omitempty"`
-	} `json:"result,omitempty"`
+		Title string `json:"title,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15019,44 +15019,44 @@ type PluginExtensionDisableResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Success status
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginExtensionDisableResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Success status
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15096,44 +15096,44 @@ type PluginExtensionEnableResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Success status
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginExtensionEnableResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Success status
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15173,44 +15173,44 @@ type PluginExtensionInstallResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result List of installed extensions
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]string `json:"result,omitempty"`
+		Result []string `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginExtensionInstallResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result List of installed extensions
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]string `json:"result,omitempty"`
+	Result []string `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15250,146 +15250,146 @@ type PluginExtensionListResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result The list of installed extensions and their details
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Author The author of this extension
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Base The base name of this extension
-			Base *string `json:"base,omitempty"`
+			Base string `json:"base,omitempty,omitzero"`
 
 			// ComponentTypes The component types this plugin provides
-			ComponentTypes *[]string `json:"componentTypes,omitempty"`
+			ComponentTypes []string `json:"componentTypes,omitempty,omitzero"`
 
 			// Description The description of this extension
-			Description *string `json:"description,omitempty"`
+			Description string `json:"description,omitempty,omitzero"`
 
 			// DownloadURL The download URL for this extension
-			DownloadURL *string `json:"downloadURL,omitempty"`
+			DownloadURL string `json:"downloadURL,omitempty,omitzero"`
 
 			// Id The id of this extension (templates are prefixed with "template")
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// IsBundled Whether this extension is bundled with DokuWiki
-			IsBundled *bool `json:"isBundled,omitempty"`
+			IsBundled bool `json:"isBundled,omitempty,omitzero"`
 
 			// IsEnabled Whether this extension is enabled
-			IsEnabled *bool `json:"isEnabled,omitempty"`
+			IsEnabled bool `json:"isEnabled,omitempty,omitzero"`
 
 			// IsGitControlled Whether this extension is under git control
-			IsGitControlled *bool `json:"isGitControlled,omitempty"`
+			IsGitControlled bool `json:"isGitControlled,omitempty,omitzero"`
 
 			// IsInstalled Whether this extension is installed
-			IsInstalled *bool `json:"isInstalled,omitempty"`
+			IsInstalled bool `json:"isInstalled,omitempty,omitzero"`
 
 			// LastUpdate The last available remote update date
-			LastUpdate *string `json:"lastUpdate,omitempty"`
+			LastUpdate string `json:"lastUpdate,omitempty,omitzero"`
 
 			// Name The display name of this extension
-			Name *string `json:"name,omitempty"`
+			Name string `json:"name,omitempty,omitzero"`
 
 			// Notices Notices for this extension
-			Notices *[]string `json:"notices,omitempty"`
+			Notices []string `json:"notices,omitempty,omitzero"`
 
 			// Type The type of this extension ("plugin" or "template")
-			Type *string `json:"type,omitempty"`
+			Type string `json:"type,omitempty,omitzero"`
 
 			// UpdateAvailable Whether an update is available
-			UpdateAvailable *bool `json:"updateAvailable,omitempty"`
+			UpdateAvailable bool `json:"updateAvailable,omitempty,omitzero"`
 
 			// Url Documentation URL for this extension
-			Url *string `json:"url,omitempty"`
+			Url string `json:"url,omitempty,omitzero"`
 
 			// Version The installed version/date of this extension
-			Version *string `json:"version,omitempty"`
-		} `json:"result,omitempty"`
+			Version string `json:"version,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginExtensionListResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result The list of installed extensions and their details
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Author The author of this extension
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Base The base name of this extension
-		Base *string `json:"base,omitempty"`
+		Base string `json:"base,omitempty,omitzero"`
 
 		// ComponentTypes The component types this plugin provides
-		ComponentTypes *[]string `json:"componentTypes,omitempty"`
+		ComponentTypes []string `json:"componentTypes,omitempty,omitzero"`
 
 		// Description The description of this extension
-		Description *string `json:"description,omitempty"`
+		Description string `json:"description,omitempty,omitzero"`
 
 		// DownloadURL The download URL for this extension
-		DownloadURL *string `json:"downloadURL,omitempty"`
+		DownloadURL string `json:"downloadURL,omitempty,omitzero"`
 
 		// Id The id of this extension (templates are prefixed with "template")
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// IsBundled Whether this extension is bundled with DokuWiki
-		IsBundled *bool `json:"isBundled,omitempty"`
+		IsBundled bool `json:"isBundled,omitempty,omitzero"`
 
 		// IsEnabled Whether this extension is enabled
-		IsEnabled *bool `json:"isEnabled,omitempty"`
+		IsEnabled bool `json:"isEnabled,omitempty,omitzero"`
 
 		// IsGitControlled Whether this extension is under git control
-		IsGitControlled *bool `json:"isGitControlled,omitempty"`
+		IsGitControlled bool `json:"isGitControlled,omitempty,omitzero"`
 
 		// IsInstalled Whether this extension is installed
-		IsInstalled *bool `json:"isInstalled,omitempty"`
+		IsInstalled bool `json:"isInstalled,omitempty,omitzero"`
 
 		// LastUpdate The last available remote update date
-		LastUpdate *string `json:"lastUpdate,omitempty"`
+		LastUpdate string `json:"lastUpdate,omitempty,omitzero"`
 
 		// Name The display name of this extension
-		Name *string `json:"name,omitempty"`
+		Name string `json:"name,omitempty,omitzero"`
 
 		// Notices Notices for this extension
-		Notices *[]string `json:"notices,omitempty"`
+		Notices []string `json:"notices,omitempty,omitzero"`
 
 		// Type The type of this extension ("plugin" or "template")
-		Type *string `json:"type,omitempty"`
+		Type string `json:"type,omitempty,omitzero"`
 
 		// UpdateAvailable Whether an update is available
-		UpdateAvailable *bool `json:"updateAvailable,omitempty"`
+		UpdateAvailable bool `json:"updateAvailable,omitempty,omitzero"`
 
 		// Url Documentation URL for this extension
-		Url *string `json:"url,omitempty"`
+		Url string `json:"url,omitempty,omitzero"`
 
 		// Version The installed version/date of this extension
-		Version *string `json:"version,omitempty"`
-	} `json:"result,omitempty"`
+		Version string `json:"version,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15429,146 +15429,146 @@ type PluginExtensionSearchResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result List of matching extensions
 		//
 		// Examples: ["some-result","other-result"]
-		Result *[]struct {
+		Result []struct {
 			// Author The author of this extension
-			Author *string `json:"author,omitempty"`
+			Author string `json:"author,omitempty,omitzero"`
 
 			// Base The base name of this extension
-			Base *string `json:"base,omitempty"`
+			Base string `json:"base,omitempty,omitzero"`
 
 			// ComponentTypes The component types this plugin provides
-			ComponentTypes *[]string `json:"componentTypes,omitempty"`
+			ComponentTypes []string `json:"componentTypes,omitempty,omitzero"`
 
 			// Description The description of this extension
-			Description *string `json:"description,omitempty"`
+			Description string `json:"description,omitempty,omitzero"`
 
 			// DownloadURL The download URL for this extension
-			DownloadURL *string `json:"downloadURL,omitempty"`
+			DownloadURL string `json:"downloadURL,omitempty,omitzero"`
 
 			// Id The id of this extension (templates are prefixed with "template")
-			Id *string `json:"id,omitempty"`
+			Id string `json:"id,omitempty,omitzero"`
 
 			// IsBundled Whether this extension is bundled with DokuWiki
-			IsBundled *bool `json:"isBundled,omitempty"`
+			IsBundled bool `json:"isBundled,omitempty,omitzero"`
 
 			// IsEnabled Whether this extension is enabled
-			IsEnabled *bool `json:"isEnabled,omitempty"`
+			IsEnabled bool `json:"isEnabled,omitempty,omitzero"`
 
 			// IsGitControlled Whether this extension is under git control
-			IsGitControlled *bool `json:"isGitControlled,omitempty"`
+			IsGitControlled bool `json:"isGitControlled,omitempty,omitzero"`
 
 			// IsInstalled Whether this extension is installed
-			IsInstalled *bool `json:"isInstalled,omitempty"`
+			IsInstalled bool `json:"isInstalled,omitempty,omitzero"`
 
 			// LastUpdate The last available remote update date
-			LastUpdate *string `json:"lastUpdate,omitempty"`
+			LastUpdate string `json:"lastUpdate,omitempty,omitzero"`
 
 			// Name The display name of this extension
-			Name *string `json:"name,omitempty"`
+			Name string `json:"name,omitempty,omitzero"`
 
 			// Notices Notices for this extension
-			Notices *[]string `json:"notices,omitempty"`
+			Notices []string `json:"notices,omitempty,omitzero"`
 
 			// Type The type of this extension ("plugin" or "template")
-			Type *string `json:"type,omitempty"`
+			Type string `json:"type,omitempty,omitzero"`
 
 			// UpdateAvailable Whether an update is available
-			UpdateAvailable *bool `json:"updateAvailable,omitempty"`
+			UpdateAvailable bool `json:"updateAvailable,omitempty,omitzero"`
 
 			// Url Documentation URL for this extension
-			Url *string `json:"url,omitempty"`
+			Url string `json:"url,omitempty,omitzero"`
 
 			// Version The installed version/date of this extension
-			Version *string `json:"version,omitempty"`
-		} `json:"result,omitempty"`
+			Version string `json:"version,omitempty,omitzero"`
+		} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginExtensionSearchResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result List of matching extensions
 	//
 	// Examples: ["some-result","other-result"]
-	Result *[]struct {
+	Result []struct {
 		// Author The author of this extension
-		Author *string `json:"author,omitempty"`
+		Author string `json:"author,omitempty,omitzero"`
 
 		// Base The base name of this extension
-		Base *string `json:"base,omitempty"`
+		Base string `json:"base,omitempty,omitzero"`
 
 		// ComponentTypes The component types this plugin provides
-		ComponentTypes *[]string `json:"componentTypes,omitempty"`
+		ComponentTypes []string `json:"componentTypes,omitempty,omitzero"`
 
 		// Description The description of this extension
-		Description *string `json:"description,omitempty"`
+		Description string `json:"description,omitempty,omitzero"`
 
 		// DownloadURL The download URL for this extension
-		DownloadURL *string `json:"downloadURL,omitempty"`
+		DownloadURL string `json:"downloadURL,omitempty,omitzero"`
 
 		// Id The id of this extension (templates are prefixed with "template")
-		Id *string `json:"id,omitempty"`
+		Id string `json:"id,omitempty,omitzero"`
 
 		// IsBundled Whether this extension is bundled with DokuWiki
-		IsBundled *bool `json:"isBundled,omitempty"`
+		IsBundled bool `json:"isBundled,omitempty,omitzero"`
 
 		// IsEnabled Whether this extension is enabled
-		IsEnabled *bool `json:"isEnabled,omitempty"`
+		IsEnabled bool `json:"isEnabled,omitempty,omitzero"`
 
 		// IsGitControlled Whether this extension is under git control
-		IsGitControlled *bool `json:"isGitControlled,omitempty"`
+		IsGitControlled bool `json:"isGitControlled,omitempty,omitzero"`
 
 		// IsInstalled Whether this extension is installed
-		IsInstalled *bool `json:"isInstalled,omitempty"`
+		IsInstalled bool `json:"isInstalled,omitempty,omitzero"`
 
 		// LastUpdate The last available remote update date
-		LastUpdate *string `json:"lastUpdate,omitempty"`
+		LastUpdate string `json:"lastUpdate,omitempty,omitzero"`
 
 		// Name The display name of this extension
-		Name *string `json:"name,omitempty"`
+		Name string `json:"name,omitempty,omitzero"`
 
 		// Notices Notices for this extension
-		Notices *[]string `json:"notices,omitempty"`
+		Notices []string `json:"notices,omitempty,omitzero"`
 
 		// Type The type of this extension ("plugin" or "template")
-		Type *string `json:"type,omitempty"`
+		Type string `json:"type,omitempty,omitzero"`
 
 		// UpdateAvailable Whether an update is available
-		UpdateAvailable *bool `json:"updateAvailable,omitempty"`
+		UpdateAvailable bool `json:"updateAvailable,omitempty,omitzero"`
 
 		// Url Documentation URL for this extension
-		Url *string `json:"url,omitempty"`
+		Url string `json:"url,omitempty,omitzero"`
 
 		// Version The installed version/date of this extension
-		Version *string `json:"version,omitempty"`
-	} `json:"result,omitempty"`
+		Version string `json:"version,omitempty,omitzero"`
+	} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15608,44 +15608,44 @@ type PluginExtensionUninstallResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Success status
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginExtensionUninstallResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Success status
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15685,44 +15685,44 @@ type PluginMoveRenameMediaResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Always true when no error occured
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginMoveRenameMediaResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Always true when no error occured
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15762,44 +15762,44 @@ type PluginMoveRenamePageResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Always true when no error occured
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginMoveRenamePageResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Always true when no error occured
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15839,44 +15839,44 @@ type PluginUsermanagerCreateUserResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Wether the user was successfully created
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginUsermanagerCreateUserResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Wether the user was successfully created
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15916,44 +15916,44 @@ type PluginUsermanagerDeleteUserResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result wether the user was successfully deleted
 		//
 		// Examples: true
-		Result *bool `json:"result,omitempty"`
+		Result bool `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r PluginUsermanagerDeleteUserResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result wether the user was successfully deleted
 	//
 	// Examples: true
-	Result *bool `json:"result,omitempty"`
+	Result bool `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -15993,40 +15993,40 @@ type WikiAclCheckResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiAclCheckResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16066,40 +16066,40 @@ type WikiDeleteAttachmentResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiDeleteAttachmentResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16139,40 +16139,40 @@ type WikiGetAllPagesResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetAllPagesResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16212,40 +16212,40 @@ type WikiGetAttachmentResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetAttachmentResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16285,40 +16285,40 @@ type WikiGetAttachmentInfoResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetAttachmentInfoResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16358,40 +16358,40 @@ type WikiGetAttachmentsResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetAttachmentsResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16431,40 +16431,40 @@ type WikiGetBackLinksResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetBackLinksResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16504,40 +16504,40 @@ type WikiGetPageResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetPageResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16577,40 +16577,40 @@ type WikiGetPageHTMLResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetPageHTMLResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16650,40 +16650,40 @@ type WikiGetPageHTMLVersionResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetPageHTMLVersionResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16723,40 +16723,40 @@ type WikiGetPageInfoResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetPageInfoResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16796,40 +16796,40 @@ type WikiGetPageInfoVersionResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetPageInfoVersionResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16869,40 +16869,40 @@ type WikiGetPageVersionResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetPageVersionResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -16942,40 +16942,40 @@ type WikiGetPageVersionsResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetPageVersionsResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -17015,40 +17015,40 @@ type WikiGetRPCVersionSupportedResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetRPCVersionSupportedResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -17088,40 +17088,40 @@ type WikiGetRecentChangesResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetRecentChangesResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -17161,40 +17161,40 @@ type WikiGetRecentMediaChangesResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiGetRecentMediaChangesResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -17234,40 +17234,40 @@ type WikiListLinksResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiListLinksResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -17307,40 +17307,40 @@ type WikiPutAttachmentResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiPutAttachmentResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -17380,40 +17380,40 @@ type WikiPutPageResponse struct {
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *struct {
 		// Error Error object in case of an error
-		Error *struct {
+		Error struct {
 			// Code The error code
 			//
 			// Examples: 0
-			Code *int `json:"code,omitempty"`
+			Code int `json:"code,omitempty,omitzero"`
 
 			// Message The error message
 			//
 			// Examples: Success
-			Message *string `json:"message,omitempty"`
-		} `json:"error,omitempty"`
+			Message string `json:"message,omitempty,omitzero"`
+		} `json:"error,omitempty,omitzero"`
 
 		// Result Examples: {}
-		Result *map[string]interface{} `json:"result,omitempty"`
+		Result map[string]interface{} `json:"result,omitempty,omitzero"`
 	}
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r WikiPutPageResponse) GetJSON200() *struct {
 	// Error Error object in case of an error
-	Error *struct {
+	Error struct {
 		// Code The error code
 		//
 		// Examples: 0
-		Code *int `json:"code,omitempty"`
+		Code int `json:"code,omitempty,omitzero"`
 
 		// Message The error message
 		//
 		// Examples: Success
-		Message *string `json:"message,omitempty"`
-	} `json:"error,omitempty"`
+		Message string `json:"message,omitempty,omitzero"`
+	} `json:"error,omitempty,omitzero"`
 
 	// Result Examples: {}
-	Result *map[string]interface{} `json:"result,omitempty"`
+	Result map[string]interface{} `json:"result,omitempty,omitzero"`
 } {
 	return r.JSON200
 }
@@ -20120,22 +20120,22 @@ func ParseCoreAclCheckResponse(rsp *http.Response) (*CoreAclCheckResponse, error
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result permission level
 			//
 			// Examples: 42
-			Result *int `json:"result,omitempty"`
+			Result int `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20164,22 +20164,22 @@ func ParseCoreAppendPageResponse(rsp *http.Response) (*CoreAppendPageResponse, e
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Returns true on success
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20208,22 +20208,22 @@ func ParseCoreDeleteMediaResponse(rsp *http.Response) (*CoreDeleteMediaResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Should always be true
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20252,20 +20252,20 @@ func ParseCoreGetAPIVersionResponse(rsp *http.Response) (*CoreGetAPIVersionRespo
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: 42
-			Result *int `json:"result,omitempty"`
+			Result int `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20294,22 +20294,22 @@ func ParseCoreGetMediaResponse(rsp *http.Response) (*CoreGetMediaResponse, error
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Base64 encoded media file contents
 			//
 			// Examples: some-result
-			Result *string `json:"result,omitempty"`
+			Result string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20338,41 +20338,41 @@ func ParseCoreGetMediaHistoryResponse(rsp *http.Response) (*CoreGetMediaHistoryR
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Author The author of this change
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Id The media ID
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Ip The IP address from where this change was made
-				Ip *string `json:"ip,omitempty"`
+				Ip string `json:"ip,omitempty,omitzero"`
 
 				// Revision The revision (timestamp) of this change
-				Revision *int `json:"revision,omitempty"`
+				Revision int `json:"revision,omitempty,omitzero"`
 
 				// Sizechange The change in bytes
-				Sizechange *int `json:"sizechange,omitempty"`
+				Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 				// Summary The summary of this change
-				Summary *string `json:"summary,omitempty"`
+				Summary string `json:"summary,omitempty,omitzero"`
 
 				// Type The type of this change
-				Type *string `json:"type,omitempty"`
-			} `json:"result,omitempty"`
+				Type string `json:"type,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20401,41 +20401,41 @@ func ParseCoreGetMediaInfoResponse(rsp *http.Response) (*CoreGetMediaInfoRespons
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *struct {
+			Result struct {
 				// Author The author of this page revision (if available and requested)
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Hash MD5 sum over the file's content (if available and requested)
-				Hash *string `json:"hash,omitempty"`
+				Hash string `json:"hash,omitempty,omitzero"`
 
 				// Id The media ID
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Isimage Wether this is an image file
-				Isimage *bool `json:"isimage,omitempty"`
+				Isimage bool `json:"isimage,omitempty,omitzero"`
 
 				// Permission The current user's permissions for this file
-				Permission *int `json:"permission,omitempty"`
+				Permission int `json:"permission,omitempty,omitzero"`
 
 				// Revision The media revision aka last modified timestamp
-				Revision *int `json:"revision,omitempty"`
+				Revision int `json:"revision,omitempty,omitzero"`
 
 				// Size The page size in bytes
-				Size *int `json:"size,omitempty"`
-			} `json:"result,omitempty"`
+				Size int `json:"size,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20464,22 +20464,22 @@ func ParseCoreGetMediaUsageResponse(rsp *http.Response) (*CoreGetMediaUsageRespo
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result A list of pages linking to the given page
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]string `json:"result,omitempty"`
+			Result []string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20508,22 +20508,22 @@ func ParseCoreGetPageResponse(rsp *http.Response) (*CoreGetPageResponse, error) 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result the syntax of the page
 			//
 			// Examples: some-result
-			Result *string `json:"result,omitempty"`
+			Result string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20552,22 +20552,22 @@ func ParseCoreGetPageBackLinksResponse(rsp *http.Response) (*CoreGetPageBackLink
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result A list of pages linking to the given page
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]string `json:"result,omitempty"`
+			Result []string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20596,22 +20596,22 @@ func ParseCoreGetPageHTMLResponse(rsp *http.Response) (*CoreGetPageHTMLResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Rendered HTML for the page
 			//
 			// Examples: some-result
-			Result *string `json:"result,omitempty"`
+			Result string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20640,41 +20640,41 @@ func ParseCoreGetPageHistoryResponse(rsp *http.Response) (*CoreGetPageHistoryRes
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Author The author of this change
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Id The page ID
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Ip The IP address from where this change was made
-				Ip *string `json:"ip,omitempty"`
+				Ip string `json:"ip,omitempty,omitzero"`
 
 				// Revision The revision (timestamp) of this change
-				Revision *int `json:"revision,omitempty"`
+				Revision int `json:"revision,omitempty,omitzero"`
 
 				// Sizechange The change in bytes
-				Sizechange *int `json:"sizechange,omitempty"`
+				Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 				// Summary The summary of this change
-				Summary *string `json:"summary,omitempty"`
+				Summary string `json:"summary,omitempty,omitzero"`
 
 				// Type The type of this change
-				Type *string `json:"type,omitempty"`
-			} `json:"result,omitempty"`
+				Type string `json:"type,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20703,41 +20703,41 @@ func ParseCoreGetPageInfoResponse(rsp *http.Response) (*CoreGetPageInfoResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *struct {
+			Result struct {
 				// Author The author of this page revision (if available and requested)
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Hash MD5 sum over the page's content (if available and requested)
-				Hash *string `json:"hash,omitempty"`
+				Hash string `json:"hash,omitempty,omitzero"`
 
 				// Id The page ID
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Permission The current user's permissions for this page
-				Permission *int `json:"permission,omitempty"`
+				Permission int `json:"permission,omitempty,omitzero"`
 
 				// Revision The page revision aka last modified timestamp
-				Revision *int `json:"revision,omitempty"`
+				Revision int `json:"revision,omitempty,omitzero"`
 
 				// Size The page size in bytes
-				Size *int `json:"size,omitempty"`
+				Size int `json:"size,omitempty,omitzero"`
 
 				// Title The page title
-				Title *string `json:"title,omitempty"`
-			} `json:"result,omitempty"`
+				Title string `json:"title,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20766,31 +20766,31 @@ func ParseCoreGetPageLinksResponse(rsp *http.Response) (*CoreGetPageLinksRespons
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result A list of links found on the given page
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Href A hyperlink pointing to the linked target
-				Href *string `json:"href,omitempty"`
+				Href string `json:"href,omitempty,omitzero"`
 
 				// Page The wiki page this link points to, same as `href` for external links
-				Page *string `json:"page,omitempty"`
+				Page string `json:"page,omitempty,omitzero"`
 
 				// Type The type of this link: `internal`, `external` or `interwiki`
-				Type *string `json:"type,omitempty"`
-			} `json:"result,omitempty"`
+				Type string `json:"type,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20819,41 +20819,41 @@ func ParseCoreGetRecentMediaChangesResponse(rsp *http.Response) (*CoreGetRecentM
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Author The author of this change
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Id The media ID
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Ip The IP address from where this change was made
-				Ip *string `json:"ip,omitempty"`
+				Ip string `json:"ip,omitempty,omitzero"`
 
 				// Revision The revision (timestamp) of this change
-				Revision *int `json:"revision,omitempty"`
+				Revision int `json:"revision,omitempty,omitzero"`
 
 				// Sizechange The change in bytes
-				Sizechange *int `json:"sizechange,omitempty"`
+				Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 				// Summary The summary of this change
-				Summary *string `json:"summary,omitempty"`
+				Summary string `json:"summary,omitempty,omitzero"`
 
 				// Type The type of this change
-				Type *string `json:"type,omitempty"`
-			} `json:"result,omitempty"`
+				Type string `json:"type,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20882,41 +20882,41 @@ func ParseCoreGetRecentPageChangesResponse(rsp *http.Response) (*CoreGetRecentPa
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Author The author of this change
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Id The page ID
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Ip The IP address from where this change was made
-				Ip *string `json:"ip,omitempty"`
+				Ip string `json:"ip,omitempty,omitzero"`
 
 				// Revision The revision (timestamp) of this change
-				Revision *int `json:"revision,omitempty"`
+				Revision int `json:"revision,omitempty,omitzero"`
 
 				// Sizechange The change in bytes
-				Sizechange *int `json:"sizechange,omitempty"`
+				Sizechange int `json:"sizechange,omitempty,omitzero"`
 
 				// Summary The summary of this change
-				Summary *string `json:"summary,omitempty"`
+				Summary string `json:"summary,omitempty,omitzero"`
 
 				// Type The type of this change
-				Type *string `json:"type,omitempty"`
-			} `json:"result,omitempty"`
+				Type string `json:"type,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20945,22 +20945,22 @@ func ParseCoreGetWikiTimeResponse(rsp *http.Response) (*CoreGetWikiTimeResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result A unix timestamp
 			//
 			// Examples: 42
-			Result *int `json:"result,omitempty"`
+			Result int `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -20989,20 +20989,20 @@ func ParseCoreGetWikiTitleResponse(rsp *http.Response) (*CoreGetWikiTitleRespons
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: some-result
-			Result *string `json:"result,omitempty"`
+			Result string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21031,22 +21031,22 @@ func ParseCoreGetWikiVersionResponse(rsp *http.Response) (*CoreGetWikiVersionRes
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result The version string e.g. "Release 2023-04-04a"
 			//
 			// Examples: some-result
-			Result *string `json:"result,omitempty"`
+			Result string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21075,41 +21075,41 @@ func ParseCoreListMediaResponse(rsp *http.Response) (*CoreListMediaResponse, err
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Author The author of this page revision (if available and requested)
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Hash MD5 sum over the file's content (if available and requested)
-				Hash *string `json:"hash,omitempty"`
+				Hash string `json:"hash,omitempty,omitzero"`
 
 				// Id The media ID
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Isimage Wether this is an image file
-				Isimage *bool `json:"isimage,omitempty"`
+				Isimage bool `json:"isimage,omitempty,omitzero"`
 
 				// Permission The current user's permissions for this file
-				Permission *int `json:"permission,omitempty"`
+				Permission int `json:"permission,omitempty,omitzero"`
 
 				// Revision The media revision aka last modified timestamp
-				Revision *int `json:"revision,omitempty"`
+				Revision int `json:"revision,omitempty,omitzero"`
 
 				// Size The page size in bytes
-				Size *int `json:"size,omitempty"`
-			} `json:"result,omitempty"`
+				Size int `json:"size,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21138,43 +21138,43 @@ func ParseCoreListPagesResponse(rsp *http.Response) (*CoreListPagesResponse, err
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result A list of matching pages
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Author The author of this page revision (if available and requested)
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Hash MD5 sum over the page's content (if available and requested)
-				Hash *string `json:"hash,omitempty"`
+				Hash string `json:"hash,omitempty,omitzero"`
 
 				// Id The page ID
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Permission The current user's permissions for this page
-				Permission *int `json:"permission,omitempty"`
+				Permission int `json:"permission,omitempty,omitzero"`
 
 				// Revision The page revision aka last modified timestamp
-				Revision *int `json:"revision,omitempty"`
+				Revision int `json:"revision,omitempty,omitzero"`
 
 				// Size The page size in bytes
-				Size *int `json:"size,omitempty"`
+				Size int `json:"size,omitempty,omitzero"`
 
 				// Title The page title
-				Title *string `json:"title,omitempty"`
-			} `json:"result,omitempty"`
+				Title string `json:"title,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21203,22 +21203,22 @@ func ParseCoreLockPagesResponse(rsp *http.Response) (*CoreLockPagesResponse, err
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result A list of pages that were successfully locked
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]string `json:"result,omitempty"`
+			Result []string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21247,22 +21247,22 @@ func ParseCoreLoginResponse(rsp *http.Response) (*CoreLoginResponse, error) {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result If the login was successful
 			//
 			// Examples: 42
-			Result *int `json:"result,omitempty"`
+			Result int `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21291,22 +21291,22 @@ func ParseCoreLogoffResponse(rsp *http.Response) (*CoreLogoffResponse, error) {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result 0 on failure, 1 on success
 			//
 			// Examples: 42
-			Result *int `json:"result,omitempty"`
+			Result int `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21335,22 +21335,22 @@ func ParseCoreSaveMediaResponse(rsp *http.Response) (*CoreSaveMediaResponse, err
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Should always be true
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21379,22 +21379,22 @@ func ParseCoreSavePageResponse(rsp *http.Response) (*CoreSavePageResponse, error
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Returns true on success
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21423,49 +21423,49 @@ func ParseCoreSearchPagesResponse(rsp *http.Response) (*CoreSearchPagesResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result A list of matching pages
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Author Not available for search results
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Hash Not available for search results
-				Hash *string `json:"hash,omitempty"`
+				Hash string `json:"hash,omitempty,omitzero"`
 
 				// Id The page ID
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Permission The current user's permissions for this page
-				Permission *int `json:"permission,omitempty"`
+				Permission int `json:"permission,omitempty,omitzero"`
 
 				// Revision The page revision aka last modified timestamp
-				Revision *int `json:"revision,omitempty"`
+				Revision int `json:"revision,omitempty,omitzero"`
 
 				// Score The number of hits this result got
-				Score *int `json:"score,omitempty"`
+				Score int `json:"score,omitempty,omitzero"`
 
 				// Size The page size in bytes
-				Size *int `json:"size,omitempty"`
+				Size int `json:"size,omitempty,omitzero"`
 
 				// Snippet The HTML formatted snippet in which the search term was found (if available)
-				Snippet *string `json:"snippet,omitempty"`
+				Snippet string `json:"snippet,omitempty,omitzero"`
 
 				// Title The page title
-				Title *string `json:"title,omitempty"`
-			} `json:"result,omitempty"`
+				Title string `json:"title,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21494,22 +21494,22 @@ func ParseCoreUnlockPagesResponse(rsp *http.Response) (*CoreUnlockPagesResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result A list of pages that were successfully unlocked
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]string `json:"result,omitempty"`
+			Result []string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21538,38 +21538,38 @@ func ParseCoreWhoAmIResponse(rsp *http.Response) (*CoreWhoAmIResponse, error) {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *struct {
+			Result struct {
 				// Groups The groups the user is in
-				Groups *[]string `json:"groups,omitempty"`
+				Groups []string `json:"groups,omitempty,omitzero"`
 
 				// Isadmin Whether the user is a super user
-				Isadmin *bool `json:"isadmin,omitempty"`
+				Isadmin bool `json:"isadmin,omitempty,omitzero"`
 
 				// Ismanager Whether the user is a manager
-				Ismanager *bool `json:"ismanager,omitempty"`
+				Ismanager bool `json:"ismanager,omitempty,omitzero"`
 
 				// Login The login name of the user
-				Login *string `json:"login,omitempty"`
+				Login string `json:"login,omitempty,omitzero"`
 
 				// Mail The email address of the user
-				Mail *string `json:"mail,omitempty"`
+				Mail string `json:"mail,omitempty,omitzero"`
 
 				// Name The full name of the user
-				Name *string `json:"name,omitempty"`
-			} `json:"result,omitempty"`
+				Name string `json:"name,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21598,20 +21598,20 @@ func ParseDokuwikiAppendPageResponse(rsp *http.Response) (*DokuwikiAppendPageRes
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21640,20 +21640,20 @@ func ParseDokuwikiCreateUserResponse(rsp *http.Response) (*DokuwikiCreateUserRes
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21682,20 +21682,20 @@ func ParseDokuwikiDeleteUsersResponse(rsp *http.Response) (*DokuwikiDeleteUsersR
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21724,20 +21724,20 @@ func ParseDokuwikiGetPagelistResponse(rsp *http.Response) (*DokuwikiGetPagelistR
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21766,20 +21766,20 @@ func ParseDokuwikiGetTimeResponse(rsp *http.Response) (*DokuwikiGetTimeResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21808,20 +21808,20 @@ func ParseDokuwikiGetTitleResponse(rsp *http.Response) (*DokuwikiGetTitleRespons
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21850,20 +21850,20 @@ func ParseDokuwikiGetVersionResponse(rsp *http.Response) (*DokuwikiGetVersionRes
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21892,20 +21892,20 @@ func ParseDokuwikiGetXMLRPCAPIVersionResponse(rsp *http.Response) (*DokuwikiGetX
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21934,20 +21934,20 @@ func ParseDokuwikiLoginResponse(rsp *http.Response) (*DokuwikiLoginResponse, err
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -21976,20 +21976,20 @@ func ParseDokuwikiLogoffResponse(rsp *http.Response) (*DokuwikiLogoffResponse, e
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22018,20 +22018,20 @@ func ParseDokuwikiSearchResponse(rsp *http.Response) (*DokuwikiSearchResponse, e
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22060,20 +22060,20 @@ func ParseDokuwikiSetLocksResponse(rsp *http.Response) (*DokuwikiSetLocksRespons
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22102,22 +22102,22 @@ func ParsePluginAclAddAclResponse(rsp *http.Response) (*PluginAclAddAclResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result If adding the ACL rule was successful
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22146,22 +22146,22 @@ func ParsePluginAclDelAclResponse(rsp *http.Response) (*PluginAclDelAclResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result If removing the ACL rule was successful
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22190,22 +22190,22 @@ func ParsePluginAclListAclsResponse(rsp *http.Response) (*PluginAclListAclsRespo
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result {Scope: ACL}, where ACL = dictionnary {user/group: permissions_int}
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]interface{} `json:"result,omitempty"`
+			Result []interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22234,44 +22234,44 @@ func ParsePluginAichatAskResponse(rsp *http.Response) (*PluginAichatAskResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *struct {
+			Result struct {
 				// Answer The answer provided by the LLM
-				Answer *string `json:"answer,omitempty"`
+				Answer string `json:"answer,omitempty,omitzero"`
 
 				// Question The question as asked
-				Question *string `json:"question,omitempty"`
+				Question string `json:"question,omitempty,omitzero"`
 
 				// Sources The sources provided to the model to answer the questions
-				Sources *[]struct {
+				Sources []struct {
 					// Id The chunk id of the source (pages are split into chunks)
-					Id *string `json:"id,omitempty"`
+					Id string `json:"id,omitempty,omitzero"`
 
 					// Lang The language of the source
-					Lang *string `json:"lang,omitempty"`
+					Lang string `json:"lang,omitempty,omitzero"`
 
 					// Page The page id of the source
-					Page *string `json:"page,omitempty"`
+					Page string `json:"page,omitempty,omitzero"`
 
 					// Score The similarity score of this source to the query (between 0 and 1)
-					Score *float32 `json:"score,omitempty"`
+					Score float32 `json:"score,omitempty,omitzero"`
 
 					// Title The title of the source page
-					Title *string `json:"title,omitempty"`
-				} `json:"sources,omitempty"`
-			} `json:"result,omitempty"`
+					Title string `json:"title,omitempty,omitzero"`
+				} `json:"sources,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22300,37 +22300,37 @@ func ParsePluginAichatSimilarResponse(rsp *http.Response) (*PluginAichatSimilarR
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result A list of similar chunks
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Id The chunk id of the source (pages are split into chunks)
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// Lang The language of the source
-				Lang *string `json:"lang,omitempty"`
+				Lang string `json:"lang,omitempty,omitzero"`
 
 				// Page The page id of the source
-				Page *string `json:"page,omitempty"`
+				Page string `json:"page,omitempty,omitzero"`
 
 				// Score The similarity score of this source to the query (between 0 and 1)
-				Score *float32 `json:"score,omitempty"`
+				Score float32 `json:"score,omitempty,omitzero"`
 
 				// Title The title of the source page
-				Title *string `json:"title,omitempty"`
-			} `json:"result,omitempty"`
+				Title string `json:"title,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22359,22 +22359,22 @@ func ParsePluginExtensionDisableResponse(rsp *http.Response) (*PluginExtensionDi
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Success status
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22403,22 +22403,22 @@ func ParsePluginExtensionEnableResponse(rsp *http.Response) (*PluginExtensionEna
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Success status
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22447,22 +22447,22 @@ func ParsePluginExtensionInstallResponse(rsp *http.Response) (*PluginExtensionIn
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result List of installed extensions
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]string `json:"result,omitempty"`
+			Result []string `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22491,73 +22491,73 @@ func ParsePluginExtensionListResponse(rsp *http.Response) (*PluginExtensionListR
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result The list of installed extensions and their details
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Author The author of this extension
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Base The base name of this extension
-				Base *string `json:"base,omitempty"`
+				Base string `json:"base,omitempty,omitzero"`
 
 				// ComponentTypes The component types this plugin provides
-				ComponentTypes *[]string `json:"componentTypes,omitempty"`
+				ComponentTypes []string `json:"componentTypes,omitempty,omitzero"`
 
 				// Description The description of this extension
-				Description *string `json:"description,omitempty"`
+				Description string `json:"description,omitempty,omitzero"`
 
 				// DownloadURL The download URL for this extension
-				DownloadURL *string `json:"downloadURL,omitempty"`
+				DownloadURL string `json:"downloadURL,omitempty,omitzero"`
 
 				// Id The id of this extension (templates are prefixed with "template")
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// IsBundled Whether this extension is bundled with DokuWiki
-				IsBundled *bool `json:"isBundled,omitempty"`
+				IsBundled bool `json:"isBundled,omitempty,omitzero"`
 
 				// IsEnabled Whether this extension is enabled
-				IsEnabled *bool `json:"isEnabled,omitempty"`
+				IsEnabled bool `json:"isEnabled,omitempty,omitzero"`
 
 				// IsGitControlled Whether this extension is under git control
-				IsGitControlled *bool `json:"isGitControlled,omitempty"`
+				IsGitControlled bool `json:"isGitControlled,omitempty,omitzero"`
 
 				// IsInstalled Whether this extension is installed
-				IsInstalled *bool `json:"isInstalled,omitempty"`
+				IsInstalled bool `json:"isInstalled,omitempty,omitzero"`
 
 				// LastUpdate The last available remote update date
-				LastUpdate *string `json:"lastUpdate,omitempty"`
+				LastUpdate string `json:"lastUpdate,omitempty,omitzero"`
 
 				// Name The display name of this extension
-				Name *string `json:"name,omitempty"`
+				Name string `json:"name,omitempty,omitzero"`
 
 				// Notices Notices for this extension
-				Notices *[]string `json:"notices,omitempty"`
+				Notices []string `json:"notices,omitempty,omitzero"`
 
 				// Type The type of this extension ("plugin" or "template")
-				Type *string `json:"type,omitempty"`
+				Type string `json:"type,omitempty,omitzero"`
 
 				// UpdateAvailable Whether an update is available
-				UpdateAvailable *bool `json:"updateAvailable,omitempty"`
+				UpdateAvailable bool `json:"updateAvailable,omitempty,omitzero"`
 
 				// Url Documentation URL for this extension
-				Url *string `json:"url,omitempty"`
+				Url string `json:"url,omitempty,omitzero"`
 
 				// Version The installed version/date of this extension
-				Version *string `json:"version,omitempty"`
-			} `json:"result,omitempty"`
+				Version string `json:"version,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22586,73 +22586,73 @@ func ParsePluginExtensionSearchResponse(rsp *http.Response) (*PluginExtensionSea
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result List of matching extensions
 			//
 			// Examples: ["some-result","other-result"]
-			Result *[]struct {
+			Result []struct {
 				// Author The author of this extension
-				Author *string `json:"author,omitempty"`
+				Author string `json:"author,omitempty,omitzero"`
 
 				// Base The base name of this extension
-				Base *string `json:"base,omitempty"`
+				Base string `json:"base,omitempty,omitzero"`
 
 				// ComponentTypes The component types this plugin provides
-				ComponentTypes *[]string `json:"componentTypes,omitempty"`
+				ComponentTypes []string `json:"componentTypes,omitempty,omitzero"`
 
 				// Description The description of this extension
-				Description *string `json:"description,omitempty"`
+				Description string `json:"description,omitempty,omitzero"`
 
 				// DownloadURL The download URL for this extension
-				DownloadURL *string `json:"downloadURL,omitempty"`
+				DownloadURL string `json:"downloadURL,omitempty,omitzero"`
 
 				// Id The id of this extension (templates are prefixed with "template")
-				Id *string `json:"id,omitempty"`
+				Id string `json:"id,omitempty,omitzero"`
 
 				// IsBundled Whether this extension is bundled with DokuWiki
-				IsBundled *bool `json:"isBundled,omitempty"`
+				IsBundled bool `json:"isBundled,omitempty,omitzero"`
 
 				// IsEnabled Whether this extension is enabled
-				IsEnabled *bool `json:"isEnabled,omitempty"`
+				IsEnabled bool `json:"isEnabled,omitempty,omitzero"`
 
 				// IsGitControlled Whether this extension is under git control
-				IsGitControlled *bool `json:"isGitControlled,omitempty"`
+				IsGitControlled bool `json:"isGitControlled,omitempty,omitzero"`
 
 				// IsInstalled Whether this extension is installed
-				IsInstalled *bool `json:"isInstalled,omitempty"`
+				IsInstalled bool `json:"isInstalled,omitempty,omitzero"`
 
 				// LastUpdate The last available remote update date
-				LastUpdate *string `json:"lastUpdate,omitempty"`
+				LastUpdate string `json:"lastUpdate,omitempty,omitzero"`
 
 				// Name The display name of this extension
-				Name *string `json:"name,omitempty"`
+				Name string `json:"name,omitempty,omitzero"`
 
 				// Notices Notices for this extension
-				Notices *[]string `json:"notices,omitempty"`
+				Notices []string `json:"notices,omitempty,omitzero"`
 
 				// Type The type of this extension ("plugin" or "template")
-				Type *string `json:"type,omitempty"`
+				Type string `json:"type,omitempty,omitzero"`
 
 				// UpdateAvailable Whether an update is available
-				UpdateAvailable *bool `json:"updateAvailable,omitempty"`
+				UpdateAvailable bool `json:"updateAvailable,omitempty,omitzero"`
 
 				// Url Documentation URL for this extension
-				Url *string `json:"url,omitempty"`
+				Url string `json:"url,omitempty,omitzero"`
 
 				// Version The installed version/date of this extension
-				Version *string `json:"version,omitempty"`
-			} `json:"result,omitempty"`
+				Version string `json:"version,omitempty,omitzero"`
+			} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22681,22 +22681,22 @@ func ParsePluginExtensionUninstallResponse(rsp *http.Response) (*PluginExtension
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Success status
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22725,22 +22725,22 @@ func ParsePluginMoveRenameMediaResponse(rsp *http.Response) (*PluginMoveRenameMe
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Always true when no error occured
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22769,22 +22769,22 @@ func ParsePluginMoveRenamePageResponse(rsp *http.Response) (*PluginMoveRenamePag
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Always true when no error occured
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22813,22 +22813,22 @@ func ParsePluginUsermanagerCreateUserResponse(rsp *http.Response) (*PluginUserma
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Wether the user was successfully created
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22857,22 +22857,22 @@ func ParsePluginUsermanagerDeleteUserResponse(rsp *http.Response) (*PluginUserma
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result wether the user was successfully deleted
 			//
 			// Examples: true
-			Result *bool `json:"result,omitempty"`
+			Result bool `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22901,20 +22901,20 @@ func ParseWikiAclCheckResponse(rsp *http.Response) (*WikiAclCheckResponse, error
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22943,20 +22943,20 @@ func ParseWikiDeleteAttachmentResponse(rsp *http.Response) (*WikiDeleteAttachmen
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -22985,20 +22985,20 @@ func ParseWikiGetAllPagesResponse(rsp *http.Response) (*WikiGetAllPagesResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23027,20 +23027,20 @@ func ParseWikiGetAttachmentResponse(rsp *http.Response) (*WikiGetAttachmentRespo
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23069,20 +23069,20 @@ func ParseWikiGetAttachmentInfoResponse(rsp *http.Response) (*WikiGetAttachmentI
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23111,20 +23111,20 @@ func ParseWikiGetAttachmentsResponse(rsp *http.Response) (*WikiGetAttachmentsRes
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23153,20 +23153,20 @@ func ParseWikiGetBackLinksResponse(rsp *http.Response) (*WikiGetBackLinksRespons
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23195,20 +23195,20 @@ func ParseWikiGetPageResponse(rsp *http.Response) (*WikiGetPageResponse, error) 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23237,20 +23237,20 @@ func ParseWikiGetPageHTMLResponse(rsp *http.Response) (*WikiGetPageHTMLResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23279,20 +23279,20 @@ func ParseWikiGetPageHTMLVersionResponse(rsp *http.Response) (*WikiGetPageHTMLVe
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23321,20 +23321,20 @@ func ParseWikiGetPageInfoResponse(rsp *http.Response) (*WikiGetPageInfoResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23363,20 +23363,20 @@ func ParseWikiGetPageInfoVersionResponse(rsp *http.Response) (*WikiGetPageInfoVe
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23405,20 +23405,20 @@ func ParseWikiGetPageVersionResponse(rsp *http.Response) (*WikiGetPageVersionRes
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23447,20 +23447,20 @@ func ParseWikiGetPageVersionsResponse(rsp *http.Response) (*WikiGetPageVersionsR
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23489,20 +23489,20 @@ func ParseWikiGetRPCVersionSupportedResponse(rsp *http.Response) (*WikiGetRPCVer
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23531,20 +23531,20 @@ func ParseWikiGetRecentChangesResponse(rsp *http.Response) (*WikiGetRecentChange
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23573,20 +23573,20 @@ func ParseWikiGetRecentMediaChangesResponse(rsp *http.Response) (*WikiGetRecentM
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23615,20 +23615,20 @@ func ParseWikiListLinksResponse(rsp *http.Response) (*WikiListLinksResponse, err
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23657,20 +23657,20 @@ func ParseWikiPutAttachmentResponse(rsp *http.Response) (*WikiPutAttachmentRespo
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23699,20 +23699,20 @@ func ParseWikiPutPageResponse(rsp *http.Response) (*WikiPutPageResponse, error) 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			// Error Error object in case of an error
-			Error *struct {
+			Error struct {
 				// Code The error code
 				//
 				// Examples: 0
-				Code *int `json:"code,omitempty"`
+				Code int `json:"code,omitempty,omitzero"`
 
 				// Message The error message
 				//
 				// Examples: Success
-				Message *string `json:"message,omitempty"`
-			} `json:"error,omitempty"`
+				Message string `json:"message,omitempty,omitzero"`
+			} `json:"error,omitempty,omitzero"`
 
 			// Result Examples: {}
-			Result *map[string]interface{} `json:"result,omitempty"`
+			Result map[string]interface{} `json:"result,omitempty,omitzero"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err

@@ -5,7 +5,6 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"encoding/base64"
 	"errors"
@@ -37,7 +36,8 @@ type (
 		mu      sync.Mutex
 	}
 	element struct {
-		ID, Title string
+		ID, Title      string
+		Revision, Size int
 	}
 )
 
@@ -65,28 +65,27 @@ func (d *dumper) dump(ctx context.Context, a string) (element, []string, error) 
 	}
 	{
 		resp, err := d.cl.CoreGetPageInfoWithResponse(ctx, dokuwiki.CoreGetPageInfoJSONRequestBody{Page: a})
+		if err == nil {
+			err = checkResponse(resp)
+		}
 		if err != nil {
 			return elt, nil, err
 		}
-		if result := resp.GetJSON200(); result == nil {
-			if b := resp.GetBody(); bytes.Contains(b, []byte("does not exist")) {
-				return elt, nil, fmt.Errorf("%w: %s", ErrNotFound, string(b))
-			} else {
-				return elt, nil, fmt.Errorf("get %s: %s", a, string(b))
-			}
-		} else {
-			elt.ID, elt.Title = *result.Result.Id, *result.Result.Title
-		}
+		result := resp.GetJSON200().Result
+		elt.ID, elt.Title, elt.Revision, elt.Size = result.Id, result.Title, result.Revision, result.Size
 	}
 	logger.Info("download", "id", elt.ID, "title", elt.Title)
 
 	var more []string
 	err := func() error {
 		resp, err := d.cl.CoreGetPageHTMLWithResponse(ctx, dokuwiki.CoreGetPageHTMLJSONRequestBody{Page: elt.ID})
+		if err == nil {
+			err = checkResponse(resp)
+		}
 		if err != nil {
 			return err
 		}
-		result := *resp.GetJSON200().Result
+		result := resp.GetJSON200().Result
 		doc, err := goquery.NewDocumentFromReader(strings.NewReader(result))
 		if err != nil {
 			return fmt.Errorf("parse %s: %w", result, err)

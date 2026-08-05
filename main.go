@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -17,6 +18,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"reflect"
 	"runtime"
 	"slices"
 	"strings"
@@ -50,10 +52,13 @@ func Main() error {
 	flagFirst := flags.IntLong("first", 0, "skip first n items")
 	pageHistoryCmd := ff.Command{Name: "history", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
-			req := dokuwiki.CoreGetPageHistoryJSONRequestBody{First: flagFirst}
+			req := dokuwiki.CoreGetPageHistoryJSONRequestBody{First: *flagFirst}
 			for _, a := range args {
 				req.Page = a
 				history, err := cl.CoreGetPageHistoryWithResponse(ctx, req)
+				if err == nil {
+					err = checkResponse(history)
+				}
 				if err != nil {
 					return err
 				}
@@ -70,11 +75,14 @@ func Main() error {
 			for _, a := range args {
 				req.Page = a
 				html, err := cl.CoreGetPageHTMLWithResponse(ctx, req)
+				if err == nil {
+					err = checkResponse(html)
+				}
 				if err != nil {
 					return err
 				}
 				logger.Info("got", "status", html.Status())
-				os.Stdout.Write([]byte(*html.GetJSON200().Result))
+				os.Stdout.Write([]byte(html.GetJSON200().Result))
 			}
 			return nil
 		},
@@ -86,6 +94,9 @@ func Main() error {
 			for _, a := range args {
 				req.Page = a
 				links, err := cl.CoreGetPageLinksWithResponse(ctx, req)
+				if err == nil {
+					err = checkResponse(links)
+				}
 				if err != nil {
 					return err
 				}
@@ -102,6 +113,9 @@ func Main() error {
 			for _, a := range args {
 				req.Page = a
 				info, err := cl.CoreGetPageInfoWithResponse(ctx, req)
+				if err == nil {
+					err = checkResponse(info)
+				}
 				if err != nil {
 					return err
 				}
@@ -256,4 +270,22 @@ func Main() error {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 	return app.Run(ctx)
+}
+
+func checkResponse(resp interface{ GetBody() []byte }) error {
+	rv := reflect.ValueOf(resp)
+	rm, ok := rv.Type().MethodByName("GetJSON200")
+	if !ok {
+		return fmt.Errorf("no GetJSON200 on %#v", resp)
+	}
+	// if resp.GetJSON200() != nil {
+	if !rm.Func.Call([]reflect.Value{rv})[0].IsNil() {
+		return nil
+	}
+	if b := resp.GetBody(); bytes.Contains(b, []byte("does not exist")) {
+		return fmt.Errorf("%w: %s", ErrNotFound, string(b))
+	} else {
+		return fmt.Errorf("get %s", string(b))
+	}
+	return nil
 }
