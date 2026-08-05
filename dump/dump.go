@@ -49,7 +49,17 @@ type (
 	}
 )
 
-func New(cl dokuwiki.ClientWithResponsesInterface, wikiURL, destDir string, force bool) (*dumper, error) {
+func New(wikiURL, destDir string, force bool) (*dumper, error) {
+	wikiURL = strings.TrimSuffix(wikiURL, "/doku.php")
+	cl, err := dokuwiki.NewClientWithResponses(wikiURL + "/lib/exe/jsonrpc.php")
+	v, err := NewVisitor(cl, wikiURL+"/doku.php")
+	if err != nil {
+		return nil, err
+	}
+	return NewDumper(v, destDir, force)
+}
+
+func NewWithClient(cl dokuwiki.ClientWithResponsesInterface, wikiURL, destDir string, force bool) (*dumper, error) {
 	v, err := NewVisitor(cl, wikiURL)
 	if err != nil {
 		return nil, err

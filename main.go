@@ -132,7 +132,7 @@ func Main() error {
 	flagDumpForce := flags.Bool('f', "force", "force download")
 	dumpCmd := ff.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
-			d, err := dump.New(cl, wikiURL, *flagDumpDest, *flagDumpForce)
+			d, err := dump.NewWithClient(cl, wikiURL, *flagDumpDest, *flagDumpForce)
 			if err != nil {
 				return err
 			}
