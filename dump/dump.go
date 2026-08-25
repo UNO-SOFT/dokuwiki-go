@@ -11,8 +11,10 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log/slog"
 	"mime"
 	"net/http"
+	"net/http/httputil"
 	"net/url"
 	"os"
 	"path"
@@ -49,14 +51,35 @@ type (
 	}
 )
 
-func New(wikiURL, destDir string, force bool) (*dumper, error) {
+func New(wikiURL, destDir, token string, force bool) (*dumper, error) {
 	wikiURL = strings.TrimSuffix(wikiURL, "/doku.php")
-	cl, err := dokuwiki.NewClientWithResponses(wikiURL + "/lib/exe/jsonrpc.php")
+	cl, err := NewClient(wikiURL, token)
+	if err != nil {
+		return nil, err
+	}
 	v, err := NewVisitor(cl, wikiURL+"/doku.php")
 	if err != nil {
 		return nil, err
 	}
 	return NewDumper(v, destDir, force)
+}
+
+func NewClient(wikiURL, token string) (*dokuwiki.ClientWithResponses, error) {
+	return dokuwiki.NewClientWithResponses(wikiURL+"/lib/exe/jsonrpc.php",
+		dokuwiki.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
+			req.Header.Set("Authorization", "Bearer "+token)
+			req.Header.Set("Accept", "application/json")
+			logger := zlog.SFromContext(ctx)
+			if logger.Enabled(ctx, slog.LevelDebug) {
+				b, err := httputil.DumpRequestOut(req, true)
+				io.WriteString(os.Stderr, "\nvvvvvv\n")
+				os.Stderr.Write(b)
+				io.WriteString(os.Stderr, "\n^^^^^^\n")
+				return err
+			}
+			return nil
+		}),
+	)
 }
 
 func NewWithClient(cl dokuwiki.ClientWithResponsesInterface, wikiURL, destDir string, force bool) (*dumper, error) {
@@ -185,7 +208,9 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader) error {
 			errs = append(errs, err)
 		}
 	})
-	elt.HTML, err = doc.Html()
+	if elt.HTML, err = doc.Html(); err != nil {
+		errs = append(errs, err)
+	}
 	return errors.Join(errs...)
 }
 

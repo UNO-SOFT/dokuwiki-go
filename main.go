@@ -9,10 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"io"
-	"log/slog"
-	"net/http"
-	"net/http/httputil"
 	"net/url"
 	"os"
 	"os/signal"
@@ -215,22 +211,8 @@ func Main() error {
 		return err
 	}
 
-	token := os.Getenv(*flagApiEnvKeyName)
 	var err error
-	if cl, err = dokuwiki.NewClientWithResponses(*flagRPC,
-		dokuwiki.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-			req.Header.Set("Authorization", "Bearer "+token)
-			req.Header.Set("Accept", "application/json")
-			if logger.Enabled(ctx, slog.LevelDebug) {
-				b, err := httputil.DumpRequestOut(req, true)
-				io.WriteString(os.Stderr, "\nvvvvvv\n")
-				os.Stderr.Write(b)
-				io.WriteString(os.Stderr, "\n^^^^^^\n")
-				return err
-			}
-			return nil
-		}),
-	); err != nil {
+	if cl, err = dump.NewClient(*flagRPC, os.Getenv(*flagApiEnvKeyName)); err != nil {
 		return err
 	}
 
