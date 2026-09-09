@@ -161,7 +161,7 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader) error {
 			errs = append(errs, fmt.Errorf("no data-wiki-id: %v", sel))
 		}
 		elt.Children = append(elt.Children, a)
-		sel.SetAttr("href", elt.HRef())
+		sel.SetAttr("href", elt.RelHRef(a))
 	})
 	var buf, sty strings.Builder
 	doc.Find("img.media").Each(func(_ int, sel *goquery.Selection) {
@@ -240,6 +240,30 @@ func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 }
 
 func (e *Element) HRef() string { return "./" + id2fn(e.ID) }
+func (e *Element) RelHRef(targetID string) string {
+	me := strings.Split(e.ID, ":") // ["unosoft","alfa","kezikonyv","bruno3"]
+	if len(me) > 1 {
+		me = me[:len(me)-1]
+	}
+	ot := strings.Split(targetID, ":") // ["unosoft","alfa","kezikonyv","bruno3","09_giro"]
+	for i := 0; i < len(me); i++ {
+		if len(ot) <= i || ot[i] != me[i] {
+			break
+		}
+		me, ot = me[1:], ot[1:]
+		i--
+	}
+	if len(me) == 0 {
+		return "./" + id2fn(strings.Join(ot, ":"))
+	}
+	pre := make([]string, 0, len(me))
+	for range len(me) {
+		pre = append(pre, "..")
+	}
+	// []
+	// ["09_giro"]
+	return id2fn(strings.Join(append(pre, ot...), ":"))
+}
 
 func id2fn(id string) string {
 	parts := make([]string, 0, strings.Count(id, ":"))
