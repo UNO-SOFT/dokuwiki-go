@@ -34,18 +34,25 @@ var ErrNotFound = errors.New("not found")
 
 func CheckResponse(resp interface{ GetBody() []byte }) error {
 	rv := reflect.ValueOf(resp)
+	if rv.Type().Kind() == reflect.Pointer {
+		rv = rv.Elem()
+	}
+	var status string
+	if rf := rv.FieldByName("HTTPResponse"); rf.IsValid() {
+		status = rf.Interface().(*http.Response).Status
+	}
 	rm, ok := rv.Type().MethodByName("GetJSON200")
 	if !ok {
-		return fmt.Errorf("no GetJSON200 on %#v", resp)
+		return fmt.Errorf("%s: no GetJSON200 on %#v", status, resp)
 	}
 	// if resp.GetJSON200() != nil {
 	if !rm.Func.Call([]reflect.Value{rv})[0].IsNil() {
 		return nil
 	}
 	if b := resp.GetBody(); bytes.Contains(b, []byte("does not exist")) {
-		return fmt.Errorf("%w: %s", ErrNotFound, string(b))
+		return fmt.Errorf("%s: %w: %s", status, ErrNotFound, string(b))
 	} else {
-		return fmt.Errorf("get %s", string(b))
+		return fmt.Errorf("%s: get %s", status, string(b))
 	}
 	return nil
 }

@@ -65,9 +65,10 @@ func New(wikiURL, destDir, token string, force bool) (*dumper, error) {
 }
 
 func NewClient(wikiURL, token string) (*dokuwiki.ClientWithResponses, error) {
-	return dokuwiki.NewClientWithResponses(wikiURL+"/lib/exe/jsonrpc.php",
+	return dokuwiki.NewClientWithResponses(wikiURL,
 		dokuwiki.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
 			req.Header.Set("Authorization", "Bearer "+token)
+			req.Header.Set("X-DokuWiki-Token", token) // Alternative if Auth header is stripped somewhere
 			req.Header.Set("Accept", "application/json")
 			logger := zlog.SFromContext(ctx)
 			if logger.Enabled(ctx, slog.LevelDebug) {
@@ -118,8 +119,12 @@ func (v *visitor) Get(ctx context.Context, a string) (Element, error) {
 	return elt, err
 }
 
+// curl -X POST "https://wiki.unosoft.hu/lib/exe/jsonrpc.php/core.getPageInfo" -H "content-type: application/json" -d '{ "page": "unosoft:alfa:kezikonyv:bruno3"}' -H authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkb2t1d2lraSIsInN1YiI6Imtlemlrb255diIsImlhdCI6MTc4NTc2OTE4OH0=.XvvkVitAGeoHoeAzrVoN11fVPNYL2nALDtz33sRfS8A="
+
 func (v *visitor) GetInfo(ctx context.Context, a string) (Element, error) {
-	resp, err := v.cl.CoreGetPageInfoWithResponse(ctx, dokuwiki.CoreGetPageInfoJSONRequestBody{Page: a})
+	resp, err := v.cl.CoreGetPageInfoWithResponse(ctx, dokuwiki.CoreGetPageInfoJSONRequestBody{
+		Page: a,
+	})
 	if err == nil {
 		err = dokuwiki.CheckResponse(resp)
 	}
