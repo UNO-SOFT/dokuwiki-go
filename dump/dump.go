@@ -6,6 +6,7 @@ package dump
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -38,8 +39,8 @@ type (
 	}
 	dumper struct {
 		visitor
-		destDir string
-		force   bool
+		destDir     string
+		embedImages bool
 	}
 
 	Element struct {
@@ -51,7 +52,7 @@ type (
 	}
 )
 
-func New(wikiURL, destDir, token string, force bool) (*dumper, error) {
+func New(wikiURL, destDir, token string, force, embedImages bool) (*dumper, error) {
 	wikiURL = strings.TrimSuffix(wikiURL, "/doku.php")
 	cl, err := NewClient(wikiURL, token)
 	if err != nil {
@@ -61,7 +62,7 @@ func New(wikiURL, destDir, token string, force bool) (*dumper, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewDumper(v, destDir, force)
+	return NewDumper(v, destDir, force, embedImages)
 }
 
 func NewClient(wikiURL, token string) (*dokuwiki.ClientWithResponses, error) {
@@ -83,12 +84,12 @@ func NewClient(wikiURL, token string) (*dokuwiki.ClientWithResponses, error) {
 	)
 }
 
-func NewWithClient(cl dokuwiki.ClientWithResponsesInterface, wikiURL, destDir string, force bool) (*dumper, error) {
+func NewWithClient(cl dokuwiki.ClientWithResponsesInterface, wikiURL, destDir string, force, embedImages bool) (*dumper, error) {
 	v, err := NewVisitor(cl, wikiURL)
 	if err != nil {
 		return nil, err
 	}
-	return NewDumper(v, destDir, force)
+	return NewDumper(v, destDir, force, embedImages)
 }
 
 func NewVisitor(cl dokuwiki.ClientWithResponsesInterface, wikiURL string) (*visitor, error) {
@@ -99,11 +100,14 @@ func NewVisitor(cl dokuwiki.ClientWithResponsesInterface, wikiURL string) (*visi
 	return &visitor{cl: cl, base: base}, nil
 }
 
-func NewDumper(v *visitor, destDir string, force bool) (*dumper, error) {
+func NewDumper(v *visitor, destDir string, force, embedImages bool) (*dumper, error) {
+	if force {
+		os.RemoveAll(destDir)
+	}
 	if err := os.MkdirAll(destDir, 0755); err != nil {
 		return nil, err
 	}
-	return &dumper{visitor: *v, destDir: destDir}, nil
+	return &dumper{visitor: *v, destDir: destDir, embedImages: embedImages}, nil
 }
 
 func (v *visitor) Get(ctx context.Context, a string) (Element, error) {
@@ -115,7 +119,7 @@ func (v *visitor) Get(ctx context.Context, a string) (Element, error) {
 	if err != nil {
 		return elt, err
 	}
-	err = elt.ParseHTML(ctx, r)
+	err = elt.ParseHTML(ctx, r, "")
 	return elt, err
 }
 
@@ -148,7 +152,7 @@ func (elt *Element) GetHTML(ctx context.Context) (io.Reader, error) {
 	return strings.NewReader(resp.GetJSON200().Result), nil
 }
 
-func (elt *Element) ParseHTML(ctx context.Context, r io.Reader) error {
+func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string) error {
 	logger := zlog.SFromContext(ctx).With("id", elt.ID)
 	doc, err := goquery.NewDocumentFromReader(r)
 	if err != nil {
@@ -163,7 +167,11 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader) error {
 		elt.Children = append(elt.Children, a)
 		sel.SetAttr("href", elt.RelHRef(a))
 	})
+	dir := filepath.Join(imagesDir, path.Dir(id2fn(elt.ID)))
+	os.MkdirAll(dir, 0755)
+	var cwd string
 	var buf, sty strings.Builder
+	hsh := sha256.New()
 	doc.Find("img.media").Each(func(_ int, sel *goquery.Selection) {
 		if err := func() error {
 			src, ok := sel.Attr("src")
@@ -202,11 +210,39 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader) error {
 			}
 			defer resp.Body.Close()
 			ct, _, _ := mime.ParseMediaType(resp.Header.Get("Content-Type"))
-			buf.Reset()
-			if err = dataURL(&buf, resp.Body, ct); err != nil {
-				return err
+			if imagesDir == "" {
+				buf.Reset()
+				if err = dataURL(&buf, resp.Body, ct); err != nil {
+					return err
+				}
+				sel.SetAttr("src", buf.String())
+			} else {
+				_, ext, _ := strings.Cut(ct, "/")
+				fh, err := os.CreateTemp(dir, "img-*."+ext)
+				if err != nil {
+					if cwd == "" {
+						cwd, _ = os.Getwd()
+					}
+					return fmt.Errorf("CreateTemp@%s(%s): %w", cwd, dir, err)
+				}
+				// logger.Warn("tmp", "file", fh.Name())
+				hsh.Reset()
+				if _, err = io.Copy(io.MultiWriter(fh, hsh), resp.Body); err != nil {
+					err = fmt.Errorf("Copy to %s: %w", fh.Name(), err)
+				}
+				fh.Close()
+				if err != nil {
+					os.Remove(fh.Name())
+					return err
+				}
+				bn := base64.URLEncoding.EncodeToString(hsh.Sum(nil)) + "." + ext
+				src, dst := fh.Name(), filepath.Join(filepath.Dir(fh.Name()), bn)
+				// logger.Warn("mv", "src", src, "dst", dst)
+				if err = os.Rename(src, dst); err != nil {
+					return fmt.Errorf("mv %s %s: %w", src, dst, err)
+				}
+				sel.SetAttr("src", "./"+bn)
 			}
-			sel.SetAttr("src", buf.String())
 			return nil
 		}(); err != nil {
 			logger.Error("sel", "error", err)
@@ -305,6 +341,10 @@ func (d *dumper) Walk(
 		args := todo[0]
 		todo = todo[1:]
 		todoMu.Unlock()
+		var dd string
+		if !d.embedImages {
+			dd = d.destDir
+		}
 
 		grp, ctx := errgroup.WithContext(ctx)
 		grp.SetLimit(runtime.GOMAXPROCS(-1))
@@ -327,7 +367,7 @@ func (d *dumper) Walk(
 
 				fn := filepath.Join(d.destDir, id2fn(elt.ID))
 				var body io.Reader
-				if !d.force && elt.Revision != 0 {
+				if elt.Revision != 0 {
 					if fh, err := os.Open(fn); err == nil {
 						defer fh.Close()
 						if fi, err := fh.Stat(); err == nil && fi.Size() != 0 && fi.ModTime().After(time.Unix(int64(elt.Revision), 0)) {
@@ -343,7 +383,7 @@ func (d *dumper) Walk(
 						return err
 					}
 				}
-				if err = elt.ParseHTML(ctx, body); err != nil {
+				if err = elt.ParseHTML(ctx, body, dd); err != nil {
 					return err
 				}
 				if err = walk(ctx, elt, err); err != nil {

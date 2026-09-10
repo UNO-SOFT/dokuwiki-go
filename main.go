@@ -126,9 +126,10 @@ func Main() error {
 	flags = ff.NewFlagSet("dump")
 	flagDumpDest := flags.String('o', "output", "", "destination directory")
 	flagDumpForce := flags.Bool('f', "force", "force download")
+	flagDumpSeparateImages := flags.Bool(0, "separate-images", "do not embed images")
 	dumpCmd := ff.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
-			d, err := dump.NewWithClient(cl, wikiURL, *flagDumpDest, *flagDumpForce)
+			d, err := dump.NewWithClient(cl, wikiURL, *flagDumpDest, *flagDumpForce, !*flagDumpSeparateImages)
 			if err != nil {
 				return err
 			}
