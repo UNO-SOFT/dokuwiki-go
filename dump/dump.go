@@ -30,7 +30,10 @@ import (
 	dokuwiki "github.com/UNO-SOFT/dokuwiki-go/rest"
 	"github.com/UNO-SOFT/zlog/v2"
 	"github.com/google/renameio/v2"
+
 	"golang.org/x/sync/errgroup"
+	"golang.org/x/text/encoding"
+	"golang.org/x/text/encoding/htmlindex"
 )
 
 type (
@@ -42,6 +45,7 @@ type (
 	dumper struct {
 		visitor
 		destDir     string
+		encoding    encoding.Encoding
 		embedImages bool
 	}
 
@@ -81,6 +85,20 @@ func (d *dumper) Client(cl dokuwiki.ClientWithResponsesInterface) *dumper {
 // EmbedImages sets whether we should embed the images.
 func (d *dumper) EmbedImages(embed bool) *dumper {
 	d.embedImages = embed
+	return d
+}
+
+// Encoding sets the encoding of which the dumped HTML files are written.
+func (d *dumper) Encoding(enc string) *dumper {
+	enc = strings.ToLower(strings.TrimSpace(enc))
+	if enc == "" || enc == "utf8" || enc == "utf-8" {
+		d.encoding = nil
+	} else {
+		var err error
+		if d.encoding, err = htmlindex.Get(enc); err != nil {
+			panic(err)
+		}
+	}
 	return d
 }
 
@@ -139,7 +157,9 @@ func NewDumper(v *visitor, destDir string, force, embedImages bool) (*dumper, er
 	if err := os.MkdirAll(destDir, 0755); err != nil {
 		return nil, err
 	}
-	return &dumper{visitor: *v, destDir: destDir, embedImages: embedImages}, nil
+	return &dumper{
+		visitor: *v, destDir: destDir, embedImages: embedImages,
+	}, nil
 }
 
 func (v *visitor) Get(ctx context.Context, a string) (Element, error) {
@@ -311,6 +331,17 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string
 func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 	logger := zlog.SFromContext(ctx)
 	var elts []Element
+	transform := func(s string) []byte { return []byte(s) }
+	if d.encoding != nil {
+		enc := encoding.HTMLEscapeUnsupported(d.encoding.NewEncoder())
+		transform = func(s string) []byte {
+			b, err := enc.Bytes([]byte(s))
+			if err != nil {
+				panic(fmt.Errorf("%q: %w", s, err))
+			}
+			return b
+		}
+	}
 	err := d.Walk(ctx, func(ctx context.Context, elt Element, err error) error {
 		if err != nil {
 			logger.Warn("walk", "error", err)
@@ -319,7 +350,8 @@ func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 		logger.Info("Walk", "id", elt.ID)
 		fn := filepath.Join(d.destDir, elt.FileName())
 		os.MkdirAll(filepath.Dir(fn), 0775)
-		err = renameio.WriteFile(fn, []byte(elt.HTML), 0644)
+
+		err = renameio.WriteFile(fn, transform(elt.HTML), 0644)
 		elt.HTML = ""
 		elts = append(elts, elt)
 		return err

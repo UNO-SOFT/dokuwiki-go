@@ -131,6 +131,7 @@ func Main() error {
 	flagDumpSeparateImages := flags.Bool(0, "separate-images", "do not embed images")
 	flagDumpMaxWidth := flags.Int(0, "max-width", 0, "page max width in pixels")
 	flagDumpHtmldoc := flags.Bool(0, "htmldoc", "use htmldoc to generate a PDF")
+	flagDumpEncoding := flags.String(0, "encoding", "utf-8", "charset to use")
 	dumpCmd := ff.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
 			destDir := *flagDumpDest
@@ -141,7 +142,7 @@ func Main() error {
 				}
 
 				var err error
-				if destDir, err = os.MkdirTemp(filepath.Dir(destDir), "dokuwiki-go-*"); err != nil {
+				if destDir, err = os.MkdirTemp("", "dokuwiki-go-*"); err != nil {
 					return err
 				}
 				defer os.RemoveAll(destDir)
@@ -151,6 +152,7 @@ func Main() error {
 				return err
 			}
 			d.MaxWidth(*flagDumpMaxWidth)
+			d.Encoding(*flagDumpEncoding)
 
 			tmpl, err := template.New("index").Parse(`<!DOCTYPE html>
 	<body>
@@ -205,7 +207,7 @@ func Main() error {
 			}
 
 			args = append(make([]string, 0, 8+len(elts)),
-				"--charset", "utf-8",
+				"--charset", *flagDumpEncoding,
 				"--browserwidth", strconv.Itoa(*flagDumpMaxWidth),
 				"-t", "pdf14",
 				"-f", *flagDumpDest,
