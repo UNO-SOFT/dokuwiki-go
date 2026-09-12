@@ -21,6 +21,7 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -34,8 +35,9 @@ import (
 
 type (
 	visitor struct {
-		cl   dokuwiki.ClientWithResponsesInterface
-		base *url.URL
+		cl       dokuwiki.ClientWithResponsesInterface
+		base     *url.URL
+		maxWidth int
 	}
 	dumper struct {
 		visitor
@@ -51,6 +53,36 @@ type (
 		visitor   *visitor
 	}
 )
+
+// MaxWidth sets the maximum image width.
+func (v *visitor) MaxWidth(maxWidth int) *visitor {
+	v.maxWidth = maxWidth
+	return v
+}
+
+// MaxWidth sets the maximum image width.
+func (d *dumper) MaxWidth(maxWidth int) *dumper {
+	d.visitor.MaxWidth(maxWidth)
+	return d
+}
+
+// DestDir sets the destination directory.
+func (d *dumper) DestDir(destDir string) *dumper {
+	d.destDir = destDir
+	return d
+}
+
+// Client sets the client.
+func (d *dumper) Client(cl dokuwiki.ClientWithResponsesInterface) *dumper {
+	d.cl = cl
+	return d
+}
+
+// EmbedImages sets whether we should embed the images.
+func (d *dumper) EmbedImages(embed bool) *dumper {
+	d.embedImages = embed
+	return d
+}
 
 func New(wikiURL, destDir, token string, force, embedImages bool) (*dumper, error) {
 	wikiURL = strings.TrimSuffix(wikiURL, "/doku.php")
@@ -167,9 +199,10 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string
 		elt.Children = append(elt.Children, a)
 		sel.SetAttr("href", elt.RelHRef(a))
 	})
-	dir := filepath.Join(imagesDir, path.Dir(id2fn(elt.ID)))
+	dir := filepath.Join(imagesDir, path.Dir(elt.FileName()))
 	os.MkdirAll(dir, 0755)
 	var cwd string
+	maxWidth := elt.visitor.maxWidth
 	var buf, sty strings.Builder
 	hsh := sha256.New()
 	doc.Find("img.media").Each(func(_ int, sel *goquery.Selection) {
@@ -181,11 +214,14 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string
 			} else if strings.HasPrefix(src, "data:") {
 				return nil
 			}
-			logger.Info("download", "src", src)
+			logger.Debug("download", "src", src)
 			ref, err := url.Parse(src)
 			if err != nil {
 				return fmt.Errorf("resolve %s: %w", src, err)
 			}
+
+			// width, height to style
+			var width int64
 			if _, ok := sel.Attr("style"); !ok {
 				q := ref.Query()
 				sty.Reset()
@@ -195,10 +231,26 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string
 						sty.WriteString(": ")
 						sty.WriteString(s)
 						sty.WriteString("; ")
+						if maxWidth > 0 && k == "width" {
+							width, _ = strconv.ParseInt(s, 10, 32)
+						}
 					}
 				}
 				sel.SetAttr("style", sty.String())
 			}
+
+			// Limit WIDTH for HTMLDOC
+			if maxWidth > 0 { //HTMLDOC
+				if width == 0 {
+					if s, ok := sel.Attr("width"); ok {
+						width, _ = strconv.ParseInt(s, 10, 32)
+					}
+				}
+				if width > int64(maxWidth) {
+					sel.SetAttr("WIDTH", "100%")
+				}
+			}
+
 			want := elt.visitor.base.ResolveReference(ref).String()
 			req, err := http.NewRequestWithContext(ctx, "GET", want, nil)
 			if err != nil {
@@ -265,7 +317,7 @@ func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 			return nil
 		}
 		logger.Info("Walk", "id", elt.ID)
-		fn := filepath.Join(d.destDir, id2fn(elt.ID))
+		fn := filepath.Join(d.destDir, elt.FileName())
 		os.MkdirAll(filepath.Dir(fn), 0775)
 		err = renameio.WriteFile(fn, []byte(elt.HTML), 0644)
 		elt.HTML = ""
@@ -275,7 +327,8 @@ func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 	return elts, err
 }
 
-func (e *Element) HRef() string { return "./" + id2fn(e.ID) }
+func (e *Element) HRef() string     { return "./" + id2ref(e.ID) }
+func (e *Element) FileName() string { return filepath.FromSlash(e.HRef()) }
 func (e *Element) RelHRef(targetID string) string {
 	me := strings.Split(e.ID, ":") // ["unosoft","alfa","kezikonyv","bruno3"]
 	if len(me) > 1 {
@@ -290,7 +343,7 @@ func (e *Element) RelHRef(targetID string) string {
 		i--
 	}
 	if len(me) == 0 {
-		return "./" + id2fn(strings.Join(ot, ":"))
+		return "./" + id2ref(strings.Join(ot, ":"))
 	}
 	pre := make([]string, 0, len(me))
 	for range len(me) {
@@ -298,10 +351,10 @@ func (e *Element) RelHRef(targetID string) string {
 	}
 	// []
 	// ["09_giro"]
-	return id2fn(strings.Join(append(pre, ot...), ":"))
+	return id2ref(strings.Join(append(pre, ot...), ":"))
 }
 
-func id2fn(id string) string {
+func id2ref(id string) string {
 	parts := make([]string, 0, strings.Count(id, ":"))
 	for p := range strings.SplitSeq(id+".html", ":") {
 		parts = append(parts, template.URLQueryEscaper(p))
@@ -365,7 +418,7 @@ func (d *dumper) Walk(
 					return err
 				}
 
-				fn := filepath.Join(d.destDir, id2fn(elt.ID))
+				fn := filepath.Join(d.destDir, elt.FileName())
 				var body io.Reader
 				if elt.Revision != 0 {
 					if fh, err := os.Open(fn); err == nil {

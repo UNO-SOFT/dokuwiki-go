@@ -11,9 +11,11 @@ import (
 	"html/template"
 	"net/url"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 
 	dump "github.com/UNO-SOFT/dokuwiki-go/dump"
@@ -127,12 +129,29 @@ func Main() error {
 	flagDumpDest := flags.String('o', "output", "", "destination directory")
 	flagDumpForce := flags.Bool('f', "force", "force download")
 	flagDumpSeparateImages := flags.Bool(0, "separate-images", "do not embed images")
+	flagDumpMaxWidth := flags.Int(0, "max-width", 0, "page max width in pixels")
+	flagDumpHtmldoc := flags.Bool(0, "htmldoc", "use htmldoc to generate a PDF")
 	dumpCmd := ff.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
-			d, err := dump.NewWithClient(cl, wikiURL, *flagDumpDest, *flagDumpForce, !*flagDumpSeparateImages)
+			destDir := *flagDumpDest
+			if *flagDumpHtmldoc {
+				*flagDumpSeparateImages = true
+				if *flagDumpMaxWidth == 0 {
+					*flagDumpMaxWidth = 1024
+				}
+
+				var err error
+				if destDir, err = os.MkdirTemp(filepath.Dir(destDir), "dokuwiki-go-*"); err != nil {
+					return err
+				}
+				defer os.RemoveAll(destDir)
+			}
+			d, err := dump.NewWithClient(cl, wikiURL, destDir, *flagDumpForce, !*flagDumpSeparateImages)
 			if err != nil {
 				return err
 			}
+			d.MaxWidth(*flagDumpMaxWidth)
+
 			tmpl, err := template.New("index").Parse(`<!DOCTYPE html>
 	<body>
 		<ul>
@@ -169,7 +188,9 @@ func Main() error {
 					return err
 				}
 			}
-			fh, err := renameio.NewPendingFile(filepath.Join(*flagDumpDest, "index.html"), renameio.WithPermissions(0644))
+			fh, err := renameio.NewPendingFile(filepath.Join(
+				destDir, "index.html",
+			), renameio.WithPermissions(0644))
 			if err != nil {
 				return err
 			}
@@ -178,7 +199,26 @@ func Main() error {
 			if err = tmpl.Execute(fh, elts); err != nil {
 				return err
 			}
-			return fh.CloseAtomicallyReplace()
+			err = fh.CloseAtomicallyReplace()
+			if err != nil || !*flagDumpHtmldoc {
+				return err
+			}
+
+			args = append(make([]string, 0, 8+len(elts)),
+				"--charset", "utf-8",
+				"--browserwidth", strconv.Itoa(*flagDumpMaxWidth),
+				"-t", "pdf14",
+				"-f", *flagDumpDest,
+			)
+			for _, e := range elts {
+				args = append(args, filepath.Join(destDir, e.FileName()))
+			}
+			if *flagDumpDest == "" {
+				*flagDumpDest = "-"
+			}
+			cmd := exec.CommandContext(ctx, "htmldoc", args...)
+			cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+			return cmd.Run()
 		},
 	}
 
