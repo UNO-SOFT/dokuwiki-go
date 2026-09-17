@@ -5,7 +5,10 @@
 package main
 
 import (
+	"archive/zip"
+	"bytes"
 	"context"
+	_ "embed"
 	"errors"
 	"fmt"
 	"html/template"
@@ -26,6 +29,9 @@ import (
 	"github.com/peterbourgon/ff/v4"
 	"github.com/peterbourgon/ff/v4/ffhelp"
 )
+
+//go:embed htmldoc-data.zip
+var htmldocDataZip []byte
 
 var (
 	verbose = zlog.VerboseVar(1)
@@ -132,9 +138,23 @@ func Main() error {
 	flagDumpMaxWidth := flags.Int(0, "max-width", 0, "page max width in pixels")
 	flagDumpHtmldoc := flags.Bool(0, "htmldoc", "use htmldoc to generate a PDF")
 	flagDumpEncoding := flags.String(0, "encoding", "utf-8", "charset to use")
+	flagDumpKeepTemp := flags.Bool('x', "keep-tmp", "keep temporary directories")
 	dumpCmd := ff.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
 			destDir := *flagDumpDest
+			var htmldoc, dataDir string
+			deferRemove := func(dir string) {
+				if *flagDumpKeepTemp {
+					logger.Warn("keep", "dir", dir)
+				} else {
+					os.RemoveAll(dir)
+				}
+			}
+
+			if !*flagDumpHtmldoc && strings.HasSuffix(*flagDumpDest, ".pdf") {
+				*flagDumpHtmldoc = true
+			}
+
 			if *flagDumpHtmldoc {
 				*flagDumpSeparateImages = true
 				if *flagDumpMaxWidth == 0 {
@@ -145,8 +165,31 @@ func Main() error {
 				if destDir, err = os.MkdirTemp("", "dokuwiki-go-*"); err != nil {
 					return err
 				}
-				defer os.RemoveAll(destDir)
+				defer deferRemove(destDir)
+				if htmldoc, _ = exec.LookPath("htmldoc"); htmldoc != "" {
+					const defaultDataDir = "/usr/local/share/htmldoc"
+					if _, err := os.Stat(filepath.Join(defaultDataDir, "fonts")); err == nil {
+						dataDir = defaultDataDir
+					}
+				}
+				if htmldoc == "" || dataDir == "" {
+					if dataDir, err = os.MkdirTemp("", "htmldoc-datadir-*"); err != nil {
+						return err
+					}
+					defer deferRemove(dataDir)
+					zr, err := zip.NewReader(bytes.NewReader(htmldocDataZip), int64(len(htmldocDataZip)))
+					if err != nil {
+						return err
+					}
+					if err = os.CopyFS(dataDir, zr); err != nil {
+						return err
+					}
+					if htmldoc == "" {
+						htmldoc = filepath.Join(dataDir, "htmldoc")
+					}
+				}
 			}
+
 			d, err := dump.NewWithClient(cl, wikiURL, destDir, *flagDumpForce, !*flagDumpSeparateImages)
 			if err != nil {
 				return err
@@ -206,9 +249,10 @@ func Main() error {
 				return err
 			}
 
-			args = append(make([]string, 0, 8+len(elts)),
+			args = append(make([]string, 0, 10+len(elts)),
 				"--charset", *flagDumpEncoding,
 				"--browserwidth", strconv.Itoa(*flagDumpMaxWidth),
+				"--datadir", dataDir,
 				"-t", "pdf14",
 				"-f", *flagDumpDest,
 			)
@@ -218,7 +262,7 @@ func Main() error {
 			if *flagDumpDest == "" {
 				*flagDumpDest = "-"
 			}
-			cmd := exec.CommandContext(ctx, "htmldoc", args...)
+			cmd := exec.CommandContext(ctx, htmldoc, args...)
 			cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 			return cmd.Run()
 		},

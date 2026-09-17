@@ -1,0 +1,38 @@
+#!/bin/bash
+set -euo pipefail
+#env NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build 'nixpkgs#pkgsStatic.htmldoc' --impure --print-out-paths
+#nix-build "<nixpkgs/nixos>" \ --arg configuration \ "{ nixpkgs = with (import <nixpkgs/lib>).systems.examples; { buildPlatform = gnu64; hostPlatform = musl64; }; }" \ -A pkgs.htmldoc
+#nix-shell -p \ '(with import <nixpkgs> {}; [pkgsStatic.gcc pkgsStatic.zlib pkgsStatic.libpng pkgsStatic.libjpeg])'
+
+podman build -t tgulacsi/alpine-sdk -f <(
+	cat <<EOF
+FROM alpine:edge
+MAINTAINER Leo <thinkabit.ukim@gmail.com>
+
+RUN rm /etc/apk/repositories \
+    && printf -- >> /etc/apk/repositories \
+    'http://dl-cdn.alpinelinux.org/alpine/edge/%s\n' \
+    main community testing
+
+RUN apk add -U --no-cache \
+    alpine-conf \
+    alpine-sdk \
+    zlib-static libjpeg-turbo-static libpng-static \
+    zlib-dev libjpeg-turbo-dev libpng-dev
+RUN apk upgrade -a
+RUN setup-apkcache /var/cache/apk
+
+USER root
+
+CMD ["/bin/sh"]
+EOF
+)
+
+version=1.9.24
+curl -sS -m30 -L "https://github.com/michaelrsweet/htmldoc/archive/refs/tags/v${version}.tar.gz" | tar xzf - -C /tmp
+
+(cd contrib/docks && podman build -t tgulacsi/alpine-sdk .)
+podman run -ti -v "/tmp/htmldoc-${version}:/tmp/htmldoc:rw" tgulacsi/alpine-sdk /bin/sh -c "set -euo pipefail; set -x; ls -lA /tmp; cd /tmp/htmldoc; make distclean || echo $?; ./configure --without-http --without-gui LDFLAGS='-static -s' && make -j8"
+
+zipfn="$(pwd)/htmldoc-data.zip"
+(cd /tmp/htmldoc-1.9.24 && zip -9r "$zipfn" fonts && zip -9j "$zipfn" htmldoc/htmldoc)
