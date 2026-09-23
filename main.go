@@ -10,8 +10,6 @@ import (
 	"context"
 	_ "embed"
 	"errors"
-	"fmt"
-	"html/template"
 	"net/url"
 	"os"
 	"os/exec"
@@ -199,31 +197,6 @@ func Main() error {
 			d.Encoding(*flagDumpEncoding)
 			d.Flat(*flagDumpFlat)
 
-			tmpl, err := template.New("index").Parse(`<!DOCTYPE html>
-	<body>
-		<ul>
-			{{range .}}
-			<li><a href="{{.HRef}}">{{.Title}}</a></li>
-			{{end}}
-		</ul>
-	</body>
-</html>`)
-			if err != nil {
-				return err
-			}
-
-			var buf strings.Builder
-			if err = tmpl.Execute(&buf, []dump.Element{
-				// Csak minta amivel mennie kell
-				{ID: "unosoft:alfa:kezikonyv:bruno3", Title: "BRUNO3 Kézikönyv"},
-			}); err != nil {
-				return err
-			}
-			// fmt.Println(buf.String())
-			if s := buf.String(); strings.Contains(s, "ZgotmplZ") {
-				return fmt.Errorf("bad template:\n%s", s)
-			}
-
 			var elts []dump.Element
 			for _, a := range args {
 				ee, err := d.Dump(ctx, a)
@@ -243,12 +216,7 @@ func Main() error {
 				return err
 			}
 			defer fh.Cleanup()
-			logger.Debug("exec", "template", tmpl, "elts", elts, "length", len(elts))
-			if err = tmpl.Execute(fh, elts); err != nil {
-				return err
-			}
-			err = fh.CloseAtomicallyReplace()
-			if err != nil || !*flagDumpHtmldoc {
+			if err = dump.WriteIndex(fh, nil, elts); err != nil || !*flagDumpHtmldoc {
 				return err
 			}
 
