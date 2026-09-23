@@ -35,4 +35,4 @@ curl -sS -m30 -L "https://github.com/michaelrsweet/htmldoc/archive/refs/tags/v${
 podman run -ti -v "/tmp/htmldoc-${version}:/tmp/htmldoc:rw" tgulacsi/alpine-sdk /bin/sh -c "set -euo pipefail; set -x; ls -lA /tmp; cd /tmp/htmldoc; make distclean || echo $?; ./configure --without-http --without-gui LDFLAGS='-static -s' && make -j8"
 
 zipfn="$(pwd)/htmldoc-data.zip"
-(cd /tmp/htmldoc-1.9.24 && zip -9r "$zipfn" fonts && zip -9j "$zipfn" htmldoc/htmldoc)
+(cd /tmp/htmldoc-1.9.24 && zip -9r "$zipfn" fonts data && zip -9j "$zipfn" htmldoc/htmldoc)
