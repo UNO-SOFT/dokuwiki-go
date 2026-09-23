@@ -216,7 +216,10 @@ func Main() error {
 				return err
 			}
 			defer fh.Cleanup()
-			if err = dump.WriteIndex(fh, nil, elts); err != nil || !*flagDumpHtmldoc {
+			if err = dump.WriteIndex(fh, nil, elts); err != nil {
+				return err
+			}
+			if err = fh.CloseAtomicallyReplace(); err != nil || !*flagDumpHtmldoc {
 				return err
 			}
 

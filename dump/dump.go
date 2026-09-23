@@ -40,23 +40,23 @@ type (
 	visitor struct {
 		cl       dokuwiki.ClientWithResponsesInterface
 		base     *url.URL
-		maxWidth int
 		root     string
+		maxWidth int
 		flat     bool
 	}
 	dumper struct {
+		encoding encoding.Encoding
+		destDir  string
 		visitor
-		destDir     string
-		encoding    encoding.Encoding
 		embedImages bool
 	}
 
 	Element struct {
-		Children  []string
+		visitor   *visitor
 		HTML      string
 		ID, Title string
+		Children  []string
 		Revision  int
-		visitor   *visitor
 	}
 )
 
@@ -307,7 +307,7 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string
 				// logger.Warn("tmp", "file", fh.Name())
 				hsh.Reset()
 				if _, err = io.Copy(io.MultiWriter(fh, hsh), resp.Body); err != nil {
-					err = fmt.Errorf("Copy to %s: %w", fh.Name(), err)
+					err = fmt.Errorf("copy to %s: %w", fh.Name(), err)
 				}
 				fh.Close()
 				if err != nil {
