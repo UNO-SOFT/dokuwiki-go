@@ -139,6 +139,7 @@ func Main() error {
 	flagDumpHtmldoc := flags.Bool(0, "htmldoc", "use htmldoc to generate a PDF")
 	flagDumpEncoding := flags.String(0, "encoding", "utf-8", "charset to use")
 	flagDumpKeepTemp := flags.Bool('x', "keep-tmp", "keep temporary directories")
+	flagDumpFlat := flags.Bool(0, "flat", "flat, no directory hierarchy")
 	dumpCmd := ff.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, args []string) error {
 			destDir := *flagDumpDest
@@ -196,6 +197,7 @@ func Main() error {
 			}
 			d.MaxWidth(*flagDumpMaxWidth)
 			d.Encoding(*flagDumpEncoding)
+			d.Flat(*flagDumpFlat)
 
 			tmpl, err := template.New("index").Parse(`<!DOCTYPE html>
 	<body>
@@ -212,6 +214,7 @@ func Main() error {
 
 			var buf strings.Builder
 			if err = tmpl.Execute(&buf, []dump.Element{
+				// Csak minta amivel mennie kell
 				{ID: "unosoft:alfa:kezikonyv:bruno3", Title: "BRUNO3 Kézikönyv"},
 			}); err != nil {
 				return err

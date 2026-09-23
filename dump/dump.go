@@ -41,6 +41,8 @@ type (
 		cl       dokuwiki.ClientWithResponsesInterface
 		base     *url.URL
 		maxWidth int
+		root     string
+		flat     bool
 	}
 	dumper struct {
 		visitor
@@ -73,6 +75,11 @@ func (d *dumper) MaxWidth(maxWidth int) *dumper {
 // DestDir sets the destination directory.
 func (d *dumper) DestDir(destDir string) *dumper {
 	d.destDir = destDir
+	return d
+}
+
+func (d *dumper) Flat(flat bool) *dumper {
+	d.visitor.flat = flat
 	return d
 }
 
@@ -342,9 +349,18 @@ func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 			return b
 		}
 	}
-	err := d.Walk(ctx, func(ctx context.Context, elt Element, err error) error {
+	d2 := *d
+	if d2.flat {
+		d2.root = a
+	} else {
+		d2.root = ""
+	}
+	err := d2.Walk(ctx, func(ctx context.Context, elt Element, err error) error {
 		if err != nil {
 			logger.Warn("walk", "error", err)
+			return nil
+		}
+		if strings.Contains(elt.ID, ":archiv") {
 			return nil
 		}
 		logger.Info("Walk", "id", elt.ID)
@@ -359,9 +375,18 @@ func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 	return elts, err
 }
 
-func (e *Element) HRef() string     { return "./" + id2ref(e.ID) }
+func (e *Element) HRef() string {
+	// TODO
+	if e.visitor != nil && e.visitor.flat {
+		return "./" + id2ref(mkod(strings.TrimPrefix(e.ID, e.visitor.root)))
+	}
+	return "./" + id2ref(e.ID)
+}
 func (e *Element) FileName() string { return filepath.FromSlash(e.HRef()) }
 func (e *Element) RelHRef(targetID string) string {
+	if e.visitor != nil && e.visitor.flat {
+		return "./" + id2ref(mkod(strings.TrimPrefix(targetID, e.visitor.root)))
+	}
 	me := strings.Split(e.ID, ":") // ["unosoft","alfa","kezikonyv","bruno3"]
 	if len(me) > 1 {
 		me = me[:len(me)-1]
@@ -491,4 +516,22 @@ func (d *dumper) Walk(
 		}
 	}
 	return nil
+}
+
+func mkod(id string) string {
+	if id == "" {
+		return "00"
+	}
+	var buf strings.Builder
+	for p := range strings.SplitSeq(id, ":") {
+		if buf.Len() != 0 {
+			buf.WriteByte('.')
+		}
+		if len(p) >= 2 && '0' <= p[0] && p[0] <= '9' && '0' <= p[1] && p[1] <= '9' {
+			buf.WriteString(p[:2])
+		} else {
+			buf.WriteString(p)
+		}
+	}
+	return buf.String()
 }
