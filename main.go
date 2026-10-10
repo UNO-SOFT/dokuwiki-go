@@ -19,13 +19,13 @@ import (
 	"strconv"
 	"strings"
 
+	"flag"
+	"github.com/UNO-SOFT/cli"
 	dump "github.com/UNO-SOFT/dokuwiki-go/dump"
 	dokuwiki "github.com/UNO-SOFT/dokuwiki-go/rest"
 	"github.com/UNO-SOFT/zlog/v2"
 	"github.com/go-json-experiment/json"
 	"github.com/google/renameio/v2"
-	"github.com/peterbourgon/ff/v4"
-	"github.com/peterbourgon/ff/v4/ffhelp"
 )
 
 //go:embed htmldoc-data.zip
@@ -46,10 +46,11 @@ func main() {
 func Main() error {
 	var cl dokuwiki.ClientWithResponsesInterface
 
-	flags := ff.NewFlagSet("history")
-	flagFirst := flags.IntLong("first", 0, "skip first n items")
-	pageHistoryCmd := ff.Command{Name: "history", Flags: flags,
-		Exec: func(ctx context.Context, args []string) error {
+	flags := flag.NewFlagSet("history", flag.ContinueOnError)
+	flagFirst := flags.Int("first", 0, "skip first n items")
+	pageHistoryCmd := cli.Command{Name: "history", Flags: flags,
+		Exec: func(ctx context.Context, state *cli.State) error {
+			args := state.Args
 			req := dokuwiki.CoreGetPageHistoryJSONRequestBody{First: *flagFirst}
 			for _, a := range args {
 				req.Page = a
@@ -68,8 +69,9 @@ func Main() error {
 		},
 	}
 
-	pageHTMLCmd := ff.Command{Name: "html",
-		Exec: func(ctx context.Context, args []string) error {
+	pageHTMLCmd := cli.Command{Name: "html",
+		Exec: func(ctx context.Context, state *cli.State) error {
+			args := state.Args
 			var req dokuwiki.CoreGetPageHTMLJSONRequestBody
 			for _, a := range args {
 				req.Page = a
@@ -87,8 +89,9 @@ func Main() error {
 		},
 	}
 
-	pageLinksCmd := ff.Command{Name: "links",
-		Exec: func(ctx context.Context, args []string) error {
+	pageLinksCmd := cli.Command{Name: "links",
+		Exec: func(ctx context.Context, state *cli.State) error {
+			args := state.Args
 			var req dokuwiki.CoreGetPageLinksJSONRequestBody
 			for _, a := range args {
 				req.Page = a
@@ -107,8 +110,9 @@ func Main() error {
 		},
 	}
 
-	pageInfoCmd := ff.Command{Name: "info",
-		Exec: func(ctx context.Context, args []string) error {
+	pageInfoCmd := cli.Command{Name: "info",
+		Exec: func(ctx context.Context, state *cli.State) error {
+			args := state.Args
 			var req dokuwiki.CoreGetPageInfoJSONRequestBody
 			for _, a := range args {
 				req.Page = a
@@ -129,17 +133,18 @@ func Main() error {
 
 	var wikiURL string
 
-	flags = ff.NewFlagSet("dump")
-	flagDumpDest := flags.String('o', "output", "", "destination directory")
-	flagDumpForce := flags.Bool('f', "force", "force download")
-	flagDumpSeparateImages := flags.Bool(0, "separate-images", "do not embed images")
-	flagDumpMaxWidth := flags.Int(0, "max-width", 0, "page max width in pixels")
-	flagDumpHtmldoc := flags.Bool(0, "htmldoc", "use htmldoc to generate a PDF")
-	flagDumpEncoding := flags.String(0, "encoding", "utf-8", "charset to use")
-	flagDumpKeepTemp := flags.Bool('x', "keep-tmp", "keep temporary directories")
-	flagDumpFlat := flags.Bool(0, "flat", "flat, no directory hierarchy")
-	dumpCmd := ff.Command{Name: "dump", Flags: flags,
-		Exec: func(ctx context.Context, args []string) error {
+	flags = flag.NewFlagSet("dump", flag.ContinueOnError)
+	flagDumpDest := flags.String("output", "", "destination directory")
+	flagDumpForce := flags.Bool("force", false, "force download")
+	flagDumpSeparateImages := flags.Bool("separate-images", false, "do not embed images")
+	flagDumpMaxWidth := flags.Int("max-width", 0, "page max width in pixels")
+	flagDumpHtmldoc := flags.Bool("htmldoc", false, "use htmldoc to generate a PDF")
+	flagDumpEncoding := flags.String("encoding", "utf-8", "charset to use")
+	flagDumpKeepTemp := flags.Bool("keep-tmp", false, "keep temporary directories")
+	flagDumpFlat := flags.Bool("flat", false, "flat, no directory hierarchy")
+	dumpCmd := cli.Command{Name: "dump", Flags: flags,
+		Exec: func(ctx context.Context, state *cli.State) error {
+			args := state.Args
 			destDir := *flagDumpDest
 			var htmldoc, dataDir string
 			deferRemove := func(dir string) {
@@ -239,7 +244,7 @@ func Main() error {
 			cmd := exec.CommandContext(ctx, htmldoc, args...)
 			cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 			return cmd.Run()
-		},
+		}, FlagConfigs: []cli.FlagConfig{cli.FlagConfig{Name: "output", Short: "o"}, cli.FlagConfig{Name: "force", Short: "f"}, cli.FlagConfig{Name: "keep-tmp", Short: "x"}},
 	}
 
 	JP := func(dest *string, baseURL, path string) *string {
@@ -250,23 +255,23 @@ func Main() error {
 		return dest
 	}
 
-	flags = ff.NewFlagSet("dokuwiki")
-	flagApiEnvKeyName := flags.StringLong("api-key-env-name", "DOKUWIKI_API_KEY", "environment variable name")
-	flags.Value('v', "verbose", &verbose, "verbose logging")
-	flagBase := flags.StringLong("base", "https://wiki.unosoft.hu", "DokuWiki base URL")
-	flagRPC := JP(flags.StringLong("rpc", "", "DokuWiki RPC URL"), *flagBase, "/lib/exe/jsonrpc.php")
-	flags.StringVar(&wikiURL, 0, "wiki", "", "DokuWiki URL")
+	flags = flag.NewFlagSet("dokuwiki", flag.ContinueOnError)
+	flagApiEnvKeyName := flags.String("api-key-env-name", "DOKUWIKI_API_KEY", "environment variable name")
+	flags.Var(&verbose, "verbose", "verbose logging")
+	flagBase := flags.String("base", "https://wiki.unosoft.hu", "DokuWiki base URL")
+	flagRPC := JP(flags.String("rpc", "", "DokuWiki RPC URL"), *flagBase, "/lib/exe/jsonrpc.php")
+	flags.StringVar(&wikiURL, "wiki", "", "DokuWiki URL")
 	JP(&wikiURL, *flagBase, "/doku.php")
-	app := ff.Command{Name: "dokuwiki", Flags: flags,
+	app := cli.Command{Name: "dokuwiki", Flags: flags,
 		Usage:       "May need the @remoteapi group permission!",
-		Subcommands: []*ff.Command{&pageHistoryCmd, &pageHTMLCmd, &pageLinksCmd, &pageInfoCmd, &dumpCmd},
-		Exec: func(ctx context.Context, args []string) error {
+		SubCommands: []*cli.Command{&pageHistoryCmd, &pageHTMLCmd, &pageLinksCmd, &pageInfoCmd, &dumpCmd},
+		Exec: func(ctx context.Context, state *cli.State) error {
 			return nil
-		},
+		}, FlagConfigs: []cli.FlagConfig{cli.FlagConfig{Name: "verbose", Short: "v"}},
 	}
-	if err := app.Parse(os.Args[1:]); err != nil {
-		if errors.Is(err, ff.ErrHelp) {
-			ffhelp.Command(&app).WriteTo(os.Stderr)
+	if err := cli.Parse(&app, os.Args[1:]); err != nil {
+		if errors.Is(err, flag.ErrHelp) {
+			cli.PrintHelp(os.Stderr, &app)
 			return nil
 		}
 		return err
@@ -279,5 +284,5 @@ func Main() error {
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
-	return app.Run(zlog.NewSContext(ctx, logger))
+	return cli.Run(zlog.NewSContext(ctx, logger), &app, nil)
 }
