@@ -5,6 +5,7 @@
 package dump
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/base64"
@@ -338,11 +339,40 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string
 func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 	logger := zlog.SFromContext(ctx)
 	var elts []Element
-	transform := func(s string) []byte { return []byte(s) }
+	addPrefix := func(s string) []byte {
+		const prefix = "<!DOCTYPE html>\n"
+		const head, body = "<head>", "<body>"
+		const meta = `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />` + "\n"
+		var buf bytes.Buffer
+		buf.Grow(len(prefix) + 2*len(head) + 1 + len(meta) + len(s))
+		if !strings.HasPrefix(s, prefix[:len(prefix)-1]) {
+			buf.WriteString(prefix)
+		}
+		if i := strings.Index(s, head); i < 0 {
+			if i := strings.Index(s, body); i >= 0 {
+				buf.WriteString(s[:i])
+				s = s[i:]
+				buf.WriteString(head)
+				buf.WriteString(meta)
+				buf.WriteString("</head>")
+			}
+		} else {
+			i += len(head)
+			buf.WriteString(s[:i])
+			s = s[i:]
+			buf.WriteString(meta)
+		}
+		buf.WriteString(s)
+		return buf.Bytes()
+	}
+	transform := func(s string) []byte { return addPrefix(s) }
+	if d.encoding == nil {
+		d.encoding = encoding.Replacement
+	}
 	if d.encoding != nil {
 		enc := encoding.HTMLEscapeUnsupported(d.encoding.NewEncoder())
 		transform = func(s string) []byte {
-			b, err := enc.Bytes([]byte(s))
+			b, err := enc.Bytes(addPrefix(s))
 			if err != nil {
 				panic(fmt.Errorf("%q: %w", s, err))
 			}
