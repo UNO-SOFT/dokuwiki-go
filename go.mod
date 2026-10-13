@@ -9,7 +9,7 @@ tool (
 
 require (
 	github.com/PuerkitoBio/goquery v1.13.0
-	github.com/UNO-SOFT/cli v0.0.0-20261009074406-95b18dbd4953
+	github.com/UNO-SOFT/cli v0.0.0-20261012150915-f7b2ef801faf
 	github.com/UNO-SOFT/zlog v0.8.6
 	github.com/go-json-experiment/json v0.0.0-20260820222146-c27c302e5fc3
 	github.com/google/renameio/v2 v2.0.2

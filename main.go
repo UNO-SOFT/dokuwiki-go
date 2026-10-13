@@ -10,6 +10,7 @@ import (
 	"context"
 	_ "embed"
 	"errors"
+	"flag"
 	"net/url"
 	"os"
 	"os/exec"
@@ -19,7 +20,6 @@ import (
 	"strconv"
 	"strings"
 
-	"flag"
 	"github.com/UNO-SOFT/cli"
 	dump "github.com/UNO-SOFT/dokuwiki-go/dump"
 	dokuwiki "github.com/UNO-SOFT/dokuwiki-go/rest"
