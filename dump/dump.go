@@ -49,7 +49,7 @@ type (
 		encoding encoding.Encoding
 		destDir  string
 		visitor
-		embedImages bool
+		force, embedImages bool
 	}
 
 	Element struct {
@@ -166,7 +166,8 @@ func NewDumper(v *visitor, destDir string, force, embedImages bool) (*dumper, er
 		return nil, err
 	}
 	return &dumper{
-		visitor: *v, destDir: destDir, embedImages: embedImages,
+		visitor: *v, destDir: destDir,
+		force: force, embedImages: embedImages,
 	}, nil
 }
 
@@ -335,16 +336,18 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string
 	return errors.Join(errs...)
 }
 
+const metaCT = `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />` + "\n"
+
 // Dump pages, recursively.
 func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 	logger := zlog.SFromContext(ctx)
 	var elts []Element
 	addPrefix := func(s string) []byte {
+		s = strings.TrimPrefix(s, "<html>")
 		const prefix = "<!DOCTYPE html>\n"
 		const head, body = "<head>", "<body>"
-		const meta = `<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />` + "\n"
 		var buf bytes.Buffer
-		buf.Grow(len(prefix) + 2*len(head) + 1 + len(meta) + len(s))
+		buf.Grow(len(prefix) + 2*len(head) + 1 + len(metaCT) + len(s))
 		if !strings.HasPrefix(s, prefix[:len(prefix)-1]) {
 			buf.WriteString(prefix)
 		}
@@ -353,14 +356,14 @@ func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 				buf.WriteString(s[:i])
 				s = s[i:]
 				buf.WriteString(head)
-				buf.WriteString(meta)
+				buf.WriteString(metaCT)
 				buf.WriteString("</head>")
 			}
 		} else {
 			i += len(head)
 			buf.WriteString(s[:i])
 			s = s[i:]
-			buf.WriteString(meta)
+			buf.WriteString(metaCT)
 		}
 		buf.WriteString(s)
 		return buf.Bytes()
@@ -393,11 +396,15 @@ func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 		if strings.Contains(elt.ID, ":archiv") {
 			return nil
 		}
-		logger.Info("Walk", "id", elt.ID)
+		// oldPrefix := elt.HTML[:min(64, len(elt.HTML))]
 		fn := filepath.Join(d.destDir, elt.FileName())
 		os.MkdirAll(filepath.Dir(fn), 0775)
 
-		err = renameio.WriteFile(fn, transform(elt.HTML), 0644)
+		eltHTML := transform(elt.HTML)
+		err = renameio.WriteFile(fn, eltHTML, 0644)
+		logger.Info("Walk", "id", elt.ID,
+			// "old", oldPrefix, "new", string(eltHTML[:min(128, len(eltHTML))]),
+			"error", err)
 		elt.HTML = ""
 		elts = append(elts, elt)
 		return err
@@ -507,11 +514,11 @@ func (d *dumper) Walk(
 
 				fn := filepath.Join(d.destDir, elt.FileName())
 				var body io.Reader
-				if elt.Revision != 0 {
+				if !d.force && elt.Revision != 0 {
 					if fh, err := os.Open(fn); err == nil {
 						defer fh.Close()
 						if fi, err := fh.Stat(); err == nil && fi.Size() != 0 && fi.ModTime().After(time.Unix(int64(elt.Revision), 0)) {
-							logger.Info("skip already fresh", "file", fn)
+							logger.Info("skip already fresh", "file", fn, "revision", elt.Revision, "force", d.force)
 							body = fh
 						} else {
 							fh.Close()

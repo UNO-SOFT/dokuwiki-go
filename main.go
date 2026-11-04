@@ -11,6 +11,7 @@ import (
 	_ "embed"
 	"errors"
 	"flag"
+	"fmt"
 	"net/url"
 	"os"
 	"os/exec"
@@ -198,9 +199,11 @@ func Main() error {
 			if err != nil {
 				return err
 			}
+			// logger.Info("dumper", "dumper", fmt.Sprintf("%#v", d))
 			d.MaxWidth(*flagDumpMaxWidth)
 			d.Encoding(*flagDumpEncoding)
 			d.Flat(*flagDumpFlat)
+			// logger.Info("dumper", "dumper", fmt.Sprintf("%#v", d))
 
 			var elts []dump.Element
 			for _, a := range args {

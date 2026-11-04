@@ -15,9 +15,10 @@ func WriteIndex(w io.Writer, tmpl *template.Template, elts []Element) error {
 	if tmpl == nil {
 		var err error
 		if tmpl, err = template.New("index").Parse(`<!DOCTYPE html>
+<head>` + metaCT + `</head>
 	<body>
 		<ul>
-			{{range .}}
+			{{range . -}}
 			<li><a href="{{.HRef}}">{{.Title}}</a></li>
 			{{end}}
 		</ul>
