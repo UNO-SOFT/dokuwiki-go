@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"slices"
 	"strings"
 )
 
@@ -40,5 +41,6 @@ func WriteIndex(w io.Writer, tmpl *template.Template, elts []Element) error {
 		return fmt.Errorf("bad template:\n%s", s)
 	}
 
+	slices.SortFunc(elts, func(a, b Element) int { return strings.Compare(a.ID, b.ID) })
 	return tmpl.Execute(w, elts)
 }
