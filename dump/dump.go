@@ -159,9 +159,6 @@ func NewVisitor(cl dokuwiki.ClientWithResponsesInterface, wikiURL string) (*visi
 }
 
 func NewDumper(v *visitor, destDir string, force, embedImages bool) (*dumper, error) {
-	if force {
-		os.RemoveAll(destDir)
-	}
 	if err := os.MkdirAll(destDir, 0755); err != nil {
 		return nil, err
 	}
