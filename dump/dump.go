@@ -46,8 +46,9 @@ type (
 		flat     bool
 	}
 	dumper struct {
-		encoding encoding.Encoding
-		destDir  string
+		encoding    encoding.Encoding
+		destDir     string
+		concurrency int
 		visitor
 		force, embedImages bool
 	}
@@ -70,6 +71,11 @@ func (v *visitor) MaxWidth(maxWidth int) *visitor {
 // MaxWidth sets the maximum image width.
 func (d *dumper) MaxWidth(maxWidth int) *dumper {
 	d.visitor.MaxWidth(maxWidth)
+	return d
+}
+
+func (d *dumper) Concurrency(concurrency int) *dumper {
+	d.concurrency = concurrency
 	return d
 }
 
@@ -226,7 +232,9 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string
 		sel.SetAttr("href", elt.RelHRef(a))
 	})
 	dir := filepath.Join(imagesDir, path.Dir(elt.FileName()))
-	os.MkdirAll(dir, 0755)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		logger.Error("create images", "dir", dir)
+	}
 	var cwd string
 	maxWidth := elt.visitor.maxWidth
 	var buf, sty strings.Builder
@@ -308,9 +316,11 @@ func (elt *Element) ParseHTML(ctx context.Context, r io.Reader, imagesDir string
 				if _, err = io.Copy(io.MultiWriter(fh, hsh), resp.Body); err != nil {
 					err = fmt.Errorf("copy to %s: %w", fh.Name(), err)
 				}
-				fh.Close()
+				if closeErr := fh.Close(); closeErr != nil && err == nil {
+					err = closeErr
+				}
 				if err != nil {
-					os.Remove(fh.Name())
+					_ = os.Remove(fh.Name())
 					return err
 				}
 				bn := base64.URLEncoding.EncodeToString(hsh.Sum(nil)) + "." + ext
@@ -395,7 +405,9 @@ func (d *dumper) Dump(ctx context.Context, a string) ([]Element, error) {
 		}
 		// oldPrefix := elt.HTML[:min(64, len(elt.HTML))]
 		fn := filepath.Join(d.destDir, elt.FileName())
-		os.MkdirAll(filepath.Dir(fn), 0775)
+		if err := os.MkdirAll(filepath.Dir(fn), 0775); err != nil {
+			logger.Error("create dest", "dir", filepath.Dir(fn))
+		}
 
 		eltHTML := transform(elt.HTML)
 		err = renameio.WriteFile(fn, eltHTML, 0644)
@@ -456,7 +468,9 @@ func id2ref(id string) string {
 // https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data
 // data:[<media-type>][;base64],<data>
 func dataURL(w io.Writer, r io.Reader, mediaType string) error {
-	fmt.Fprintf(w, "data:%s;base64,", mediaType)
+	if _, err := fmt.Fprintf(w, "data:%s;base64,", mediaType); err != nil {
+		return err
+	}
 	enc := base64.NewEncoder(base64.StdEncoding, w)
 	if _, err := io.Copy(enc, r); err != nil {
 		return err
@@ -490,10 +504,15 @@ func (d *dumper) Walk(
 			dd = d.destDir
 		}
 
+		concurrency := d.concurrency
+		if concurrency <= 0 {
+			concurrency = runtime.GOMAXPROCS(-1)
+		}
 		grp, ctx := errgroup.WithContext(ctx)
-		grp.SetLimit(runtime.GOMAXPROCS(-1))
+		grp.SetLimit(concurrency)
 		for _, a := range args {
 			if _, ok := seen[a]; ok {
+				logger.Info("seen", "a", a)
 				continue
 			}
 			seen[a] = struct{}{}
@@ -506,6 +525,7 @@ func (d *dumper) Walk(
 						logger.Warn("not found", "error", err)
 						return nil
 					}
+					logger.Error("GetInfo", "a", a, "error", err)
 					return err
 				}
 
@@ -514,26 +534,36 @@ func (d *dumper) Walk(
 				if !d.force && elt.Revision != 0 {
 					if fh, err := os.Open(fn); err == nil {
 						defer fh.Close()
-						if fi, err := fh.Stat(); err == nil && fi.Size() != 0 && fi.ModTime().After(time.Unix(int64(elt.Revision), 0)) {
-							logger.Info("skip already fresh", "file", fn, "revision", elt.Revision, "force", d.force)
+						if fi, err := fh.Stat(); err == nil &&
+							fi.Size() != 0 &&
+							fi.ModTime().After(time.Unix(int64(elt.Revision), 0)) {
+							logger.Info("skip already fresh", "file", fn,
+								"revision", elt.Revision,
+								"mtime", fi.ModTime().Unix(),
+								"force", d.force)
 							body = fh
 						} else {
-							fh.Close()
+							_ = fh.Close()
 						}
 					}
 				}
+
 				if body == nil {
 					if body, err = elt.GetHTML(ctx); err != nil {
+						logger.Error("GetHTML", "error")
 						return err
 					}
 				}
 				if err = elt.ParseHTML(ctx, body, dd); err != nil {
+					logger.Error("ParseHTML", "error", err)
 					return err
 				}
 				if err = walk(ctx, elt, err); err != nil {
 					if errors.Is(err, ErrSkip) {
+						logger.Info("skip")
 						return nil
 					}
+					logger.Error("walk", "error", err)
 					return err
 				}
 				if len(elt.Children) != 0 {
@@ -541,6 +571,8 @@ func (d *dumper) Walk(
 					todoMu.Lock()
 					todo = append(todo, elt.Children)
 					todoMu.Unlock()
+					// } else {
+					// 	logger.Debug("leaf", "elt", elt)
 				}
 				return nil
 			})
@@ -554,7 +586,7 @@ func (d *dumper) Walk(
 
 func mkod(id string) string {
 	if id == "" {
-		return "00"
+		return ""
 	}
 	var buf strings.Builder
 	for p := range strings.SplitSeq(id, ":") {

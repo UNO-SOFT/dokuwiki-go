@@ -11,7 +11,6 @@ import (
 	_ "embed"
 	"errors"
 	"flag"
-	"fmt"
 	"net/url"
 	"os"
 	"os/exec"
@@ -63,8 +62,11 @@ func Main() error {
 					return err
 				}
 				logger.Info("got", "status", history.Status())
-				json.MarshalWrite(os.Stderr, history.JSON200.Result)
-				os.Stdout.Write([]byte{'\n'})
+				err = json.MarshalWrite(os.Stderr, history.JSON200.Result)
+				_, _ = os.Stdout.Write([]byte{'\n'})
+				if err != nil {
+					return err
+				}
 			}
 			return nil
 		},
@@ -84,7 +86,9 @@ func Main() error {
 					return err
 				}
 				logger.Info("got", "status", html.Status())
-				os.Stdout.Write([]byte(html.GetJSON200().Result + "\n"))
+				if _, err = os.Stdout.Write([]byte(html.GetJSON200().Result + "\n")); err != nil {
+					return err
+				}
 			}
 			return nil
 		},
@@ -104,8 +108,10 @@ func Main() error {
 					return err
 				}
 				logger.Info("got", "status", links.Status())
-				json.MarshalWrite(os.Stdout, links.GetJSON200().Result)
-				os.Stdout.Write([]byte{'\n'})
+				if err := json.MarshalWrite(os.Stdout, links.GetJSON200().Result); err != nil {
+					return err
+				}
+				_, _ = os.Stdout.Write([]byte{'\n'})
 			}
 			return nil
 		},
@@ -125,8 +131,10 @@ func Main() error {
 					return err
 				}
 				logger.Info("got", "status", info.Status())
-				json.MarshalWrite(os.Stdout, info.GetJSON200().Result)
-				os.Stdout.Write([]byte{'\n'})
+				if err := json.MarshalWrite(os.Stdout, info.GetJSON200().Result); err != nil {
+					return err
+				}
+				_, _ = os.Stdout.Write([]byte{'\n'})
 			}
 			return nil
 		},
@@ -143,6 +151,7 @@ func Main() error {
 	flagDumpEncoding := flags.String("encoding", "utf-8", "charset to use")
 	flagDumpKeepTemp := flags.Bool("keep-tmp", false, "keep temporary directories")
 	flagDumpFlat := flags.Bool("flat", false, "flat, no directory hierarchy")
+	flagDumpConcurrency := flags.Int("concurrency", -1, "concurrency")
 	dumpCmd := cli.Command{Name: "dump", Flags: flags,
 		Exec: func(ctx context.Context, state *cli.State) error {
 			args := state.Args
@@ -152,7 +161,7 @@ func Main() error {
 				if *flagDumpKeepTemp {
 					logger.Warn("keep", "dir", dir)
 				} else {
-					os.RemoveAll(dir)
+					_ = os.RemoveAll(dir)
 				}
 			}
 
@@ -203,6 +212,7 @@ func Main() error {
 			d.MaxWidth(*flagDumpMaxWidth)
 			d.Encoding(*flagDumpEncoding)
 			d.Flat(*flagDumpFlat)
+			d.Concurrency(*flagDumpConcurrency)
 			// logger.Info("dumper", "dumper", fmt.Sprintf("%#v", d))
 
 			var elts []dump.Element

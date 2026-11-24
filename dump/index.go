@@ -42,5 +42,8 @@ func WriteIndex(w io.Writer, tmpl *template.Template, elts []Element) error {
 	}
 
 	slices.SortFunc(elts, func(a, b Element) int { return strings.Compare(a.ID, b.ID) })
+	if len(elts) != 0 && elts[0].HRef() == "./.html" {
+		elts = elts[1:]
+	}
 	return tmpl.Execute(w, elts)
 }
