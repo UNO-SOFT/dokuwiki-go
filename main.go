@@ -142,6 +142,39 @@ func Main() error {
 
 	var wikiURL string
 
+	//
+	// WARNING: htmldoc does not handle inline images larger than a fiew kiB!
+	//
+	flags = flag.NewFlagSet("htmldoc", flag.ContinueOnError)
+	flagHtmldocDest := flags.String("outfile", "", "destination directory")
+	flagHtmldocEncoding := flags.String("charset", "utf-8", "charset to use")
+	flagHtmldocMaxWidth := flags.Int("browserwidth", 1024, "page max width in pixels")
+
+	htmldocCmd := cli.Command{Name: "htmldoc", Flags: flags,
+		FlagConfigs: []cli.FlagConfig{{Name: "outfile", Short: "f"}},
+		Summary:     "call htmldoc",
+		Exec: func(ctx context.Context, state *cli.State) error {
+			htmldoc, dataDir, err := mkHtmldocDataDir(ctx)
+			if err != nil {
+				return err
+			}
+			defer os.RemoveAll(dataDir)
+			args := append(append(make([]string, 0, 10+len(state.Args)),
+				"--charset", *flagHtmldocEncoding,
+				"--browserwidth", strconv.Itoa(*flagHtmldocMaxWidth),
+				"--datadir", dataDir,
+				"-t", "pdf14",
+				"-f", *flagHtmldocDest,
+			), state.Args...)
+			if *flagHtmldocDest == "" {
+				*flagHtmldocDest = "-"
+			}
+			cmd := exec.CommandContext(ctx, htmldoc, args...)
+			cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+			return cmd.Run()
+		},
+	}
+
 	flags = flag.NewFlagSet("dump", flag.ContinueOnError)
 	flagDumpDest := flags.String("output", "", "destination directory")
 	flagDumpForce := flags.Bool("force", false, "force download")
@@ -153,6 +186,11 @@ func Main() error {
 	flagDumpFlat := flags.Bool("flat", false, "flat, no directory hierarchy")
 	flagDumpConcurrency := flags.Int("concurrency", -1, "concurrency")
 	dumpCmd := cli.Command{Name: "dump", Flags: flags,
+		FlagConfigs: []cli.FlagConfig{
+			{Name: "output", Short: "o"},
+			{Name: "force", Short: "f"},
+			{Name: "keep-tmp", Short: "x"},
+		},
 		Exec: func(ctx context.Context, state *cli.State) error {
 			args := state.Args
 			destDir := *flagDumpDest
@@ -180,28 +218,10 @@ func Main() error {
 					return err
 				}
 				defer deferRemove(destDir)
-				if htmldoc, _ = exec.LookPath("htmldoc"); htmldoc != "" {
-					const defaultDataDir = "/usr/local/share/htmldoc"
-					if _, err := os.Stat(filepath.Join(defaultDataDir, "fonts")); err == nil {
-						dataDir = defaultDataDir
-					}
+				if htmldoc, dataDir, err = mkHtmldocDataDir(ctx); err != nil {
+					return err
 				}
-				if htmldoc == "" || dataDir == "" {
-					if dataDir, err = os.MkdirTemp("", "htmldoc-datadir-*"); err != nil {
-						return err
-					}
-					defer deferRemove(dataDir)
-					zr, err := zip.NewReader(bytes.NewReader(htmldocDataZip), int64(len(htmldocDataZip)))
-					if err != nil {
-						return err
-					}
-					if err = os.CopyFS(dataDir, zr); err != nil {
-						return err
-					}
-					if htmldoc == "" {
-						htmldoc = filepath.Join(dataDir, "htmldoc")
-					}
-				}
+				defer deferRemove(dataDir)
 			}
 
 			d, err := dump.NewWithClient(cl, wikiURL, destDir, *flagDumpForce, !*flagDumpSeparateImages)
@@ -249,6 +269,9 @@ func Main() error {
 				"-f", *flagDumpDest,
 			)
 			for _, e := range elts {
+				if e.ID == "" {
+					continue
+				}
 				args = append(args, filepath.Join(destDir, e.FileName()))
 			}
 			if *flagDumpDest == "" {
@@ -257,7 +280,7 @@ func Main() error {
 			cmd := exec.CommandContext(ctx, htmldoc, args...)
 			cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 			return cmd.Run()
-		}, FlagConfigs: []cli.FlagConfig{cli.FlagConfig{Name: "output", Short: "o"}, cli.FlagConfig{Name: "force", Short: "f"}, cli.FlagConfig{Name: "keep-tmp", Short: "x"}},
+		},
 	}
 
 	JP := func(dest *string, baseURL, path string) *string {
@@ -276,8 +299,12 @@ func Main() error {
 	flags.StringVar(&wikiURL, "wiki", "", "DokuWiki URL")
 	JP(&wikiURL, *flagBase, "/doku.php")
 	app := cli.Command{Name: "dokuwiki", Flags: flags,
-		Usage:       "May need the @remoteapi group permission!",
-		SubCommands: []*cli.Command{&pageHistoryCmd, &pageHTMLCmd, &pageLinksCmd, &pageInfoCmd, &dumpCmd},
+		Usage: "May need the @remoteapi group permission!",
+		SubCommands: []*cli.Command{
+			&pageHistoryCmd, &pageHTMLCmd, &pageLinksCmd, &pageInfoCmd,
+			&dumpCmd,
+			&htmldocCmd,
+		},
 		Exec: func(ctx context.Context, state *cli.State) error {
 			return nil
 		}, FlagConfigs: []cli.FlagConfig{cli.FlagConfig{Name: "verbose", Short: "v"}},
@@ -298,4 +325,36 @@ func Main() error {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 	return cli.Run(zlog.NewSContext(ctx, logger), &app, nil)
+}
+
+func mkHtmldocDataDir(ctx context.Context) (htmldoc, dataDir string, err error) {
+	if err := func() error {
+		htmldoc, _ = exec.LookPath("htmldoc")
+		if htmldoc != "" {
+			const defaultDataDir = "/usr/local/share/htmldoc"
+			if _, err := os.Stat(filepath.Join(defaultDataDir, "fonts")); err == nil {
+				dataDir = defaultDataDir
+			}
+		}
+		if htmldoc == "" || dataDir == "" {
+			if dataDir, err = os.MkdirTemp("", "htmldoc-datadir-*"); err != nil {
+				return err
+			}
+			zr, err := zip.NewReader(bytes.NewReader(htmldocDataZip), int64(len(htmldocDataZip)))
+			if err != nil {
+				return err
+			}
+			if err = os.CopyFS(dataDir, zr); err != nil {
+				return err
+			}
+			if htmldoc == "" {
+				htmldoc = filepath.Join(dataDir, "htmldoc")
+			}
+		}
+		return nil
+	}(); err != nil {
+		os.RemoveAll(dataDir)
+		return "", "", err
+	}
+	return htmldoc, dataDir, nil
 }
